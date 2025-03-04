@@ -15,7 +15,6 @@ export const Step2 = () => {
     control,
     formState: { errors },
   } = useFormContext<Step2FieldData>();
-  const { setCurrentStep, saveFormData } = useAdditionalContext();
   return (
     <Stack>
       <Typography variant="h1">Step 2</Typography>

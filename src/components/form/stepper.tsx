@@ -10,14 +10,14 @@ import {
 export interface StepperProps
   extends Pick<
     UseStepperReturn,
-    "steps" | "completed" | "activeStepIndex" | "activeStepState"
+    "steps" | "stepsCompleted" | "activeStepIndex" | "activeStepState"
   > {
   handleStep: (step: number) => () => void;
 }
 
 export const Stepper = ({
   steps,
-  completed,
+  stepsCompleted,
   activeStepIndex: activeStep,
   activeStepState: { error: activeStepError },
   handleStep,
@@ -33,13 +33,13 @@ export const Stepper = ({
           if (index === activeStep && activeStepError) {
             stepButtonProps.optional = (
               <Typography variant="caption" color="error">
-                Please fix the errors
+                {activeStepError}
               </Typography>
             );
             stepButtonProps.error = activeStepError;
           }
           return (
-            <Step key={label} completed={completed[index]}>
+            <Step key={label} completed={stepsCompleted[index]}>
               <StepButton
                 color="inherit"
                 onClick={handleStep(index)}

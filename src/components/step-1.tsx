@@ -15,7 +15,6 @@ export const Step1 = () => {
     control,
     formState: { errors },
   } = useFormContext<Step1FieldData>();
-  const { setCurrentStep, saveFormData } = useAdditionalContext();
   return (
     <>
       <Card variant="outlined" title="Who can use this form">
@@ -51,6 +50,56 @@ export const Step1 = () => {
             render={({ field }) => {
               const { label, description, placeholder } =
                 getMeta<Step1FieldNames>("applicant.profile.lastName");
+              const error = errors.applicant?.profile?.lastName;
+              return (
+                <TextField
+                  {...field}
+                  label={label}
+                  placeholder={placeholder}
+                  error={!!error}
+                  helperText={error?.message || description}
+                  fullWidth
+                  margin="normal"
+                  slotProps={{
+                    inputLabel: {
+                      shrink: true,
+                    },
+                  }}
+                />
+              );
+            }}
+          />
+          <Controller<Step1FieldData, Step1FieldNames>
+            name={"representative.profile.firstName"}
+            control={control}
+            render={({ field }) => {
+              const { label, description, placeholder } =
+                getMeta<Step1FieldNames>("representative.profile.firstName");
+              const error = errors.applicant?.profile?.firstName;
+              return (
+                <TextField
+                  {...field}
+                  label={label}
+                  placeholder={placeholder}
+                  error={!!error}
+                  helperText={error?.message || description}
+                  fullWidth
+                  margin="normal"
+                  slotProps={{
+                    inputLabel: {
+                      shrink: true,
+                    },
+                  }}
+                />
+              );
+            }}
+          />
+          <Controller<Step1FieldData, Step1FieldNames>
+            name={"representative.profile.lastName"}
+            control={control}
+            render={({ field }) => {
+              const { label, description, placeholder } =
+                getMeta<Step1FieldNames>("representative.profile.lastName");
               const error = errors.applicant?.profile?.lastName;
               return (
                 <TextField

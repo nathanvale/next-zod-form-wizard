@@ -2,23 +2,26 @@
 
 import { useAdditionalContext, F2FormData, f2Schema } from "#lib/forms/f2";
 import { Box, Button, CardContent, Stack, Typography } from "@mui/material";
-import { useFormContext } from "react-hook-form";
-import { Step1 } from "./step-1";
-import { Step2 } from "./step-2";
+import { Form, useFormContext } from "react-hook-form";
+import { Step1 } from "../step-1";
+import { Step2 } from "../step-2";
 import { validateFormData } from "#lib/forms/shared/utils";
-import { H1, H2, H3 } from "./typography";
-import { Stepper } from "./form/stepper";
+import { H1, H2, H3 } from "../typography";
+import { Stepper } from "./stepper";
+import { FormActions } from "./form-actions";
 
 export const MultiStepForm = () => {
   const { progress, saveFormData, currentSchema } = useAdditionalContext();
   const { trigger, handleSubmit, getValues } = useFormContext<F2FormData>();
 
   const {
-    activeStepIndex: stepIndex,
-    activeStepState: stepState,
+    activeStepIndex,
+    activeStepState,
     setActiveStep,
     totalSteps,
     steps,
+    stepsCompleted,
+    totalStepsCompleted,
   } = progress;
 
   const onSubmit = async () => {
@@ -39,19 +42,19 @@ export const MultiStepForm = () => {
     if (isValid) {
       setActiveStep(newStepIndex);
     } else {
-      setActiveStep(stepIndex, { error: "Please fix errors" });
+      setActiveStep(activeStepIndex, { error: "Please fix errors" });
     }
   };
 
   const handleBack = async () => {
-    if (stepIndex > 0) {
-      await validateAndSetStep(stepIndex - 1);
+    if (activeStepIndex > 0) {
+      await validateAndSetStep(activeStepIndex - 1);
     }
   };
 
   const handleNext = async () => {
-    if (stepIndex < totalSteps) {
-      await validateAndSetStep(stepIndex + 1);
+    if (activeStepIndex < totalSteps) {
+      await validateAndSetStep(activeStepIndex + 1);
     }
   };
 
@@ -70,13 +73,13 @@ export const MultiStepForm = () => {
         <Stepper
           steps={steps}
           handleStep={handleStep}
-          activeStepIndex={stepIndex}
-          activeStepState={stepState}
-          completed={[]}
+          activeStepIndex={activeStepIndex}
+          activeStepState={activeStepState}
+          stepsCompleted={[]}
         />
         <Box mb={2} />
         <H3 fontWeight={600} color="primary.main">
-          {stepIndex + 1}. Overview
+          {activeStepIndex + 1}. Overview
         </H3>
         <CardContent sx={{ paddingBottom: 2, maxWidth: "42rem" }}>
           <Typography>
@@ -86,28 +89,28 @@ export const MultiStepForm = () => {
           </Typography>
         </CardContent>
         <Box mb={2} />
-        {stepIndex === 0 && <Step1 />}
-        {stepIndex === 1 && <Step2 />}
-        {stepIndex === 2 && <Step1 />}
-        {stepIndex === 3 && <Step2 />}
-        {stepIndex === 4 && <Step1 />}
-        {stepIndex === 5 && <Step2 />}
-        <Box>
-          {stepIndex > 1 && (
-            <Button onClick={handleBack} variant="contained" color="secondary">
-              Back
-            </Button>
-          )}
-          {stepIndex < 2 ? (
-            <Button onClick={handleNext} variant="contained" color="primary">
-              Next
-            </Button>
-          ) : (
-            <Button type="submit" variant="contained" color="primary">
-              Submit
-            </Button>
-          )}
-        </Box>
+        {activeStepIndex === 0 && <Step1 />}
+        {activeStepIndex === 1 && <Step2 />}
+        {activeStepIndex === 2 && <Step1 />}
+        {activeStepIndex === 3 && <Step2 />}
+        {activeStepIndex === 4 && <Step1 />}
+        {activeStepIndex === 5 && <Step2 />}
+        <Box mb={3} />
+        <FormActions
+          isAllStepsCompleted={false}
+          steps={steps}
+          activeStepIndex={activeStepIndex}
+          stepsCompleted={stepsCompleted}
+          totalStepsCompleted={totalStepsCompleted}
+          handleNext={handleNext}
+          handleBack={handleBack}
+          handleComplete={onSubmit}
+          handleReset={progress.handleReset}
+          // TODO: pass in a hanldleDelete function if the user has a draftId
+          handleDelete={undefined}
+          // TODO: pass in a isSaving flag if the form is currently saving
+          isSaving={false}
+        />
       </Stack>
     </form>
   );

@@ -20,22 +20,22 @@ export const useStepper = ({ steps, currentStep = 0 }: useStepperProps) => {
     index: currentStep,
     state: { error: undefined },
   });
-  const [completed, setCompleted] = React.useState<{ [k: number]: boolean }>(
-    {}
-  );
+  const [stepsCompleted, setStepsCompleted] = React.useState<{
+    [k: number]: boolean;
+  }>({});
 
   const totalSteps = steps.length;
 
-  const completedSteps = () => Object.keys(completed).length;
+  const totalStepsCompleted = Object.keys(stepsCompleted).length;
 
   const isLastStep = () => activeStep.index === totalSteps - 1;
 
-  const allStepsCompleted = () => completedSteps() === totalSteps;
+  const isAllStepsCompleted = Object.keys(stepsCompleted).length === totalSteps;
 
   const handleNext = () => {
     const newActiveStepIndex =
-      isLastStep() && !allStepsCompleted()
-        ? steps.findIndex((_, i) => !(i in completed))
+      isLastStep() && !isAllStepsCompleted
+        ? steps.findIndex((_, i) => !(i in stepsCompleted))
         : activeStep.index + 1;
     _setActiveStep({ index: newActiveStepIndex, state: { error: undefined } });
   };
@@ -61,7 +61,7 @@ export const useStepper = ({ steps, currentStep = 0 }: useStepperProps) => {
 
   const handleReset = () => {
     _setActiveStep({ index: 0, state: { error: undefined } });
-    setCompleted({});
+    setStepsCompleted({});
   };
 
   const setErrorState = (isError: boolean) => {
@@ -85,14 +85,14 @@ export const useStepper = ({ steps, currentStep = 0 }: useStepperProps) => {
     steps,
     activeStep,
     setActiveStep,
-    completed,
+    stepsCompleted,
     // handleNext,
     // handleBack,
     // handleStep,
     // handleComplete,
     handleReset,
-    allStepsCompleted,
-    completedSteps,
+    isAllStepsCompleted,
+    totalStepsCompleted,
     totalSteps,
     setErrorState,
     activeStepIndex: activeStep.index,
