@@ -8,8 +8,9 @@ export const metadata: Metadata = {
 };
 
 const lato = Lato({
-  weight: ["400", "700"],
+  display: "swap",
   subsets: ["latin"],
+  weight: ["100", "300", "400", "700", "900"],
 });
 
 export default function RootLayout({
@@ -19,7 +20,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={lato.className}>
-      <body>
+      <body
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          minHeight: "100vh",
+          backgroundColor: "white",
+        }}
+      >
         <Providers>{children}</Providers>
       </body>
     </html>

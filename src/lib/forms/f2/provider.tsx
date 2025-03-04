@@ -7,12 +7,12 @@ import { F2FormData } from "./types";
 import { step1Schema, step2Schema } from "./schema";
 import { defaultValues } from "./default-values";
 import { z } from "zod";
+import { useStepper } from "../hooks/use-stepper";
 
 type AdditionalState = {
-  currentStep: number;
-  currentSchema: z.ZodObject<any, any>;
-  setCurrentStep: React.Dispatch<React.SetStateAction<number>>;
+  currentSchema: z.ZodSchema;
   saveFormData: (data: F2FormData) => Promise<void>;
+  progress: ReturnType<typeof useStepper>;
 };
 
 const AdditionalContext = createContext<AdditionalState | undefined>(undefined);
@@ -30,17 +30,31 @@ export const useAdditionalContext = () => {
 export interface F2ProviderProps {
   children: ReactNode;
 }
-const stepSchemas = [step1Schema, step2Schema];
+const stepSchemas: z.ZodSchema[] = [
+  step1Schema,
+  step2Schema,
+  step1Schema,
+  step2Schema,
+  step1Schema,
+  step2Schema,
+];
+const steps = [
+  "Overview",
+  "Applicant",
+  "Employer",
+  "Timeline",
+  "Dismissal",
+  "Review",
+];
 
 export const F2Provider: React.FC<{ children: ReactNode }> = ({
   children,
 }: F2ProviderProps) => {
-  const [currentStep, setCurrentStep] = useState(1);
-
-  const currentSchema = stepSchemas[currentStep - 1];
+  const progress = useStepper({ steps, currentStep: 0 });
+  const currentSchema = stepSchemas[progress.activeStep.index];
 
   const methods = useForm<F2FormData>({
-    resolver: zodResolver(currentSchema as any),
+    resolver: zodResolver(currentSchema),
     defaultValues,
   });
 
@@ -56,7 +70,7 @@ export const F2Provider: React.FC<{ children: ReactNode }> = ({
 
   return (
     <AdditionalContext.Provider
-      value={{ currentStep, setCurrentStep, saveFormData, currentSchema }}
+      value={{ progress, saveFormData, currentSchema }}
     >
       <RHFFormProvider {...methods}>{children}</RHFFormProvider>
     </AdditionalContext.Provider>
