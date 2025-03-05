@@ -1,9 +1,13 @@
-import { F2FieldData, defaultValues } from "#lib/forms/f2";
 import { useStepper } from "#lib/forms/hooks";
 import { AdditionalContext } from "#lib/forms/shared/context";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ReactNode, useState } from "react";
-import { useForm, FormProvider as RHFFormProvider } from "react-hook-form";
+import {
+  useForm,
+  FormProvider as RHFFormProvider,
+  FieldValues,
+  DefaultValues,
+} from "react-hook-form";
 import { z } from "zod";
 
 export interface StepSchema {
@@ -25,7 +29,7 @@ export interface StepState {
 
 export interface FormData extends StepMeta, StepState, StepSchema {}
 
-export interface F2ProviderProps {
+export interface F2ProviderProps<T extends FieldValues> {
   // The form steps
   children: ReactNode;
   // The state of each step
@@ -36,13 +40,16 @@ export interface F2ProviderProps {
   schemas: StepSchema[];
   // The metadata for each step (Label, Placeholder, etc.)
   metaData: StepMeta[];
+  // The default values for the form
+  defaultValues: DefaultValues<T>;
 }
 
-export const FormProvider = ({
+export const FormProvider = <T extends FieldValues>({
   children,
   schemas: stepsSchema,
   metaData: stepsMeta,
-}: F2ProviderProps) => {
+  defaultValues,
+}: F2ProviderProps<T>) => {
   const steps = stepsMeta.map(({ title }) => title);
   const stepper = useStepper({ steps, currentStep: 0 });
   const schemas = stepsSchema.map(({ schema }) => schema);
@@ -50,7 +57,7 @@ export const FormProvider = ({
   const [isSaving, setIsSaving] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const methods = useForm<F2FieldData>({
+  const methods = useForm<T>({
     resolver: zodResolver(currentSchema),
     defaultValues,
   });

@@ -1,6 +1,6 @@
 "use client";
 
-import { getMeta, Step1FieldData, Step1FieldNames } from "#lib/forms/f2";
+import { getMeta, Step1FieldValues, Step1FieldNames } from "#lib/forms/f2";
 import { Stack, TextField } from "@mui/material";
 import { useFormContext, Controller } from "react-hook-form";
 import { Card } from "../../core";
@@ -9,12 +9,12 @@ export const Step1 = () => {
   const {
     control,
     formState: { errors },
-  } = useFormContext<Step1FieldData>();
+  } = useFormContext<Step1FieldValues>();
   return (
     <Stack spacing={2}>
       <Card variant="form" title="Applicant Details">
         <Stack>
-          <Controller<Step1FieldData, Step1FieldNames>
+          <Controller<Step1FieldValues, Step1FieldNames>
             name={"applicant.profile.firstName"}
             control={control}
             render={({ field }) => {
@@ -39,7 +39,7 @@ export const Step1 = () => {
               );
             }}
           />
-          <Controller<Step1FieldData, Step1FieldNames>
+          <Controller<Step1FieldValues, Step1FieldNames>
             name={"applicant.profile.lastName"}
             control={control}
             render={({ field }) => {
@@ -67,7 +67,7 @@ export const Step1 = () => {
         </Stack>
       </Card>
       <Card variant="form" title="Representative Details">
-        <Controller<Step1FieldData, Step1FieldNames>
+        <Controller<Step1FieldValues, Step1FieldNames>
           name={"representative.profile.firstName"}
           control={control}
           render={({ field }) => {
@@ -92,7 +92,7 @@ export const Step1 = () => {
             );
           }}
         />
-        <Controller<Step1FieldData, Step1FieldNames>
+        <Controller<Step1FieldValues, Step1FieldNames>
           name={"representative.profile.lastName"}
           control={control}
           render={({ field }) => {

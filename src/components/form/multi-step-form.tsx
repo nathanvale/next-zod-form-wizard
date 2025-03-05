@@ -1,6 +1,6 @@
 "use client";
 
-import { F2FieldData } from "#lib/forms/f2";
+import { F2FieldValues } from "#lib/forms/f2";
 import { Box, Stack } from "@mui/material";
 import { useFormContext } from "react-hook-form";
 import { parseZodSchema } from "#lib/forms/shared/utils";
@@ -25,7 +25,7 @@ export const MultiStepForm = () => {
     trigger,
     handleSubmit: handleRHFSubmit,
     getValues,
-  } = useFormContext<F2FieldData>();
+  } = useFormContext<F2FieldValues>();
 
   const {
     activeStepIndex,
@@ -39,7 +39,7 @@ export const MultiStepForm = () => {
     handleReset,
   } = stepper;
 
-  const submitFormData = async (data: F2FieldData) => {
+  const submitFormData = async (data: F2FieldValues) => {
     try {
       const response = await fetch("/api/lodgments", {
         method: "POST",
@@ -59,7 +59,7 @@ export const MultiStepForm = () => {
     }
   };
 
-  const saveFormData = async (data: F2FieldData) => {
+  const saveFormData = async (data: F2FieldValues) => {
     try {
       if (!!draftFromId) {
         // Update existing saved draft form

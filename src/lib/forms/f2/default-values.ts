@@ -1,6 +1,6 @@
-import { F2FieldData } from "./types";
+import { F2FieldValues } from "./types";
 
-export const defaultValues: F2FieldData = {
+export const defaultValues: F2FieldValues = {
   applicant: {
     abn: {
       abn: "",

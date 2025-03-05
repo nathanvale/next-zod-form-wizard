@@ -8,9 +8,11 @@ import {
   step5Schema,
   step6Schema,
   schema,
+  F2FieldValues,
 } from "#lib/forms/f2";
 import { MultiStepForm } from "./form/multi-step-form";
 import { FormProvider, FormData, StepSchema, StepMeta } from "./form/provider";
+import { defaultValues } from "#lib/forms/f2";
 
 const data: FormData[] = (
   [
@@ -76,11 +78,12 @@ export interface AppProps {
 
 export const App = () => {
   return (
-    <FormProvider
+    <FormProvider<F2FieldValues>
       state={state}
       schemas={schemas}
       schema={schema}
       metaData={metaData}
+      defaultValues={defaultValues}
     >
       <MultiStepForm />
     </FormProvider>
