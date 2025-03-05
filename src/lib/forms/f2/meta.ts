@@ -42,19 +42,26 @@ const metadataObject: Record<F2FieldNames, FieldMeta> = {
   "representative.abn.abn": META_ABN,
   "representative.abn.legalName": META_LEGAL_NAME,
   "representative.abn.search": META_SEARCH,
-  "respondent.address.city": META_CITY,
-  "respondent.address.postcode": META_POSTCODE,
-  "respondent.address.search": META_SEARCH,
-  "respondent.address.state": META_STATE,
-  "respondent.address.street": META_STREET,
-  "respondent.profile.firstName": META_FIRST_NAME,
-  "respondent.profile.lastName": META_LAST_NAME,
-  "respondent.profile.phone": META_PHONE,
-  "respondent.contact.email": META_EMAIL,
-  "respondent.contact.phone": META_PHONE,
-  "respondent.abn.abn": META_ABN,
-  "respondent.abn.legalName": META_LEGAL_NAME,
-  "respondent.abn.search": META_SEARCH,
+  accessibility: {
+    label: "Accessibility",
+    placeholder: "Enter accessibility",
+  },
+  age: {
+    label: "Age",
+    placeholder: "Enter age",
+  },
+  height: {
+    label: "Height",
+    placeholder: "Enter height",
+  },
+  gender: {
+    label: "Gender",
+    placeholder: "Gender",
+  },
+  interpreter: {
+    label: "Interpreter",
+    placeholder: "Interpreter",
+  },
 };
 
 const f2MetadataMap = new Map<Path<F2FormData>, FieldMeta>(
