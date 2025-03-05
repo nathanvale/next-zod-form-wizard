@@ -1,13 +1,7 @@
 "use client";
 
-import {
-  F2FormData,
-  useAdditionalContext,
-  getMeta,
-  Step2FieldData,
-  Step2FieldNames,
-} from "#lib/forms/f2";
-import { Stack, TextField, Button, Typography } from "@mui/material";
+import { getMeta, Step2FieldData, Step2FieldNames } from "#lib/forms/f2";
+import { Stack, TextField, Typography } from "@mui/material";
 import { useFormContext, Controller } from "react-hook-form";
 
 export const Step2 = () => {

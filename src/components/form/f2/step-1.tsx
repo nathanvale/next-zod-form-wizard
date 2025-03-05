@@ -6,9 +6,9 @@ import {
   Step1FieldData,
   Step1FieldNames,
 } from "#lib/forms/f2";
-import { Stack, TextField, Typography } from "@mui/material";
+import { Stack, TextField } from "@mui/material";
 import { useFormContext, Controller } from "react-hook-form";
-import { Card } from "./card";
+import { Card } from "../../core";
 
 export const Step1 = () => {
   const {
@@ -16,8 +16,8 @@ export const Step1 = () => {
     formState: { errors },
   } = useFormContext<Step1FieldData>();
   return (
-    <>
-      <Card variant="outlined" title="Who can use this form">
+    <Stack spacing={2}>
+      <Card variant="form" title="Applicant Details">
         <Stack>
           <Controller<Step1FieldData, Step1FieldNames>
             name={"applicant.profile.firstName"}
@@ -69,58 +69,60 @@ export const Step1 = () => {
               );
             }}
           />
-          <Controller<Step1FieldData, Step1FieldNames>
-            name={"representative.profile.firstName"}
-            control={control}
-            render={({ field }) => {
-              const { label, description, placeholder } =
-                getMeta<Step1FieldNames>("representative.profile.firstName");
-              const error = errors.representative?.profile?.firstName;
-              return (
-                <TextField
-                  {...field}
-                  label={label}
-                  placeholder={placeholder}
-                  error={!!error}
-                  helperText={error?.message || description}
-                  fullWidth
-                  margin="normal"
-                  slotProps={{
-                    inputLabel: {
-                      shrink: true,
-                    },
-                  }}
-                />
-              );
-            }}
-          />
-          <Controller<Step1FieldData, Step1FieldNames>
-            name={"representative.profile.lastName"}
-            control={control}
-            render={({ field }) => {
-              const { label, description, placeholder } =
-                getMeta<Step1FieldNames>("representative.profile.lastName");
-              const error = errors.representative?.profile?.lastName;
-              return (
-                <TextField
-                  {...field}
-                  label={label}
-                  placeholder={placeholder}
-                  error={!!error}
-                  helperText={error?.message || description}
-                  fullWidth
-                  margin="normal"
-                  slotProps={{
-                    inputLabel: {
-                      shrink: true,
-                    },
-                  }}
-                />
-              );
-            }}
-          />
         </Stack>
       </Card>
-    </>
+      <Card variant="form" title="Representative Details">
+        <Controller<Step1FieldData, Step1FieldNames>
+          name={"representative.profile.firstName"}
+          control={control}
+          render={({ field }) => {
+            const { label, description, placeholder } =
+              getMeta<Step1FieldNames>("representative.profile.firstName");
+            const error = errors.representative?.profile?.firstName;
+            return (
+              <TextField
+                {...field}
+                label={label}
+                placeholder={placeholder}
+                error={!!error}
+                helperText={error?.message || description}
+                fullWidth
+                margin="normal"
+                slotProps={{
+                  inputLabel: {
+                    shrink: true,
+                  },
+                }}
+              />
+            );
+          }}
+        />
+        <Controller<Step1FieldData, Step1FieldNames>
+          name={"representative.profile.lastName"}
+          control={control}
+          render={({ field }) => {
+            const { label, description, placeholder } =
+              getMeta<Step1FieldNames>("representative.profile.lastName");
+            const error = errors.representative?.profile?.lastName;
+            return (
+              <TextField
+                {...field}
+                label={label}
+                placeholder={placeholder}
+                error={!!error}
+                helperText={error?.message || description}
+                fullWidth
+                margin="normal"
+                slotProps={{
+                  inputLabel: {
+                    shrink: true,
+                  },
+                }}
+              />
+            );
+          }}
+        />
+      </Card>
+    </Stack>
   );
 };

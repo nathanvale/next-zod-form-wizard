@@ -1,46 +1,106 @@
 "use client";
 
 import { useAdditionalContext, F2FormData, f2Schema } from "#lib/forms/f2";
-import { Box, Button, CardContent, Stack, Typography } from "@mui/material";
-import { Form, useFormContext } from "react-hook-form";
-import { Step1 } from "../step-1";
-import { Step2 } from "../step-2";
+import { Box, Stack } from "@mui/material";
+import { useFormContext } from "react-hook-form";
+import { Step1 } from "./f2/step-1";
+import { Step2 } from "./f2/step-2";
 import { validateFormData } from "#lib/forms/shared/utils";
-import { H1, H2, H3 } from "../typography";
+import { H1, H2 } from "../typography";
 import { Stepper } from "./stepper";
 import { FormActions } from "./actions";
 import { FormToolbar } from "./toolbar";
 
 export const MultiStepForm = () => {
-  const { progress, saveFormData, currentSchema } = useAdditionalContext();
-  const { trigger, handleSubmit, getValues } = useFormContext<F2FormData>();
+  const {
+    stepper,
+    currentSchema,
+    isSaving,
+    // TODO: hook up isSubmitting where required
+    // isSubmitting,
+    setIsSaving,
+    setIsSubmitting,
+  } = useAdditionalContext();
+  const {
+    trigger,
+    handleSubmit: handleRHFSubmit,
+    getValues,
+  } = useFormContext<F2FormData>();
 
   const {
     activeStepIndex,
     activeStepState,
     setActiveStep,
     totalSteps,
-    steps,
     stepsCompleted,
     totalStepsCompleted,
     isAllStepsCompleted,
-  } = progress;
+    steps,
+    handleReset,
+  } = stepper;
 
-  const onSubmit = async () => {
+  const submitFormData = async (data: F2FormData) => {
+    try {
+      const response = await fetch("/api/submit-form-data", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to submit form data");
+      }
+
+      console.log("Data submitted:", data);
+    } catch (error) {
+      console.error("Error submitting data:", error);
+    }
+  };
+
+  const saveFormData = async (data: F2FormData) => {
+    try {
+      const response = await fetch("/api/save-form-data", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to save form data");
+      }
+
+      console.log("Data saved:", data);
+    } catch (error) {
+      console.error("Error saving data:", error);
+    }
+  };
+
+  const handleSubmit = async () => {
     const data = getValues();
     const validationResult = validateFormData(data, f2Schema);
     if (validationResult) {
       console.log("Final data:", validationResult);
-      // Make API call to save form data
-      await saveFormData(validationResult);
+      setIsSubmitting(true);
+      await submitFormData(validationResult);
+      setIsSubmitting(false);
     }
+  };
+
+  const handleSave = async () => {
+    const data = getValues();
+    setIsSaving(true);
+    await saveFormData(data);
+    setIsSaving(false);
   };
 
   const validateAndSetStep = async (newStepIndex: number) => {
     const data = getValues();
     validateFormData(data, currentSchema);
     const isValid = await trigger();
-    console.log("isValid", isValid);
     if (isValid) {
       setActiveStep(newStepIndex);
     } else {
@@ -54,9 +114,11 @@ export const MultiStepForm = () => {
     }
   };
 
-  const handleNext = async (C) => {
+  const handleNext = async () => {
     if (activeStepIndex < totalSteps) {
       await validateAndSetStep(activeStepIndex + 1);
+    } else {
+      await handleSubmit();
     }
   };
 
@@ -65,7 +127,7 @@ export const MultiStepForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleRHFSubmit(handleSubmit)}>
       <Stack gap={0}>
         <H1 hasOutline>Create lodgment</H1>
         <Box mb={3} />
@@ -80,11 +142,9 @@ export const MultiStepForm = () => {
         />
         <Box mb={2} />
         <FormToolbar
-          // TODO: pass in a handleSave async
-          handleSave={() => Promise.resolve()}
+          handleSave={handleSave}
           saveMessage="Not saved yet"
-          // TODO: pass in a isSaving flag if the form is currently saving
-          isSaving={false}
+          isSaving={isSaving}
           saveHref="#"
           title={`${activeStepIndex + 1}. Overview`}
           description={`If your employer has dismissed you, and you believe it was unfair, you may be able to make a claim. Use Form F2.  Check you are ready before you apply.`}
@@ -105,12 +165,11 @@ export const MultiStepForm = () => {
           totalStepsCompleted={totalStepsCompleted}
           handleNext={handleNext}
           handleBack={handleBack}
-          handleComplete={onSubmit}
-          handleReset={progress.handleReset}
+          handleComplete={handleSubmit}
+          handleReset={handleReset}
           // TODO: pass in a hanldleDelete function if the user has a draftId
           handleDelete={undefined}
-          // TODO: pass in a isSaving flag if the form is currently saving
-          isSaving={false}
+          isSaving={isSaving}
         />
       </Stack>
     </form>

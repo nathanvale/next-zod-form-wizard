@@ -1,4 +1,4 @@
-import { Step1 } from "./../../../components/step-1";
+import { Step1 } from "../../../components/form/f2/step-1";
 import { z } from "zod";
 import { step1Schema, step2Schema, f2Schema } from "./schema";
 import { Path } from "react-hook-form";
