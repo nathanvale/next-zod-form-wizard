@@ -1,6 +1,6 @@
 "use client";
 
-import { useAdditionalContext, F2FieldData, schema } from "#lib/forms/f2";
+import { F2FieldData } from "#lib/forms/f2";
 import { Box, Stack } from "@mui/material";
 import { useFormContext } from "react-hook-form";
 import { parseZodSchema } from "#lib/forms/shared/utils";
@@ -11,16 +11,11 @@ import { FormToolbar } from "./toolbar";
 import { useURLSearchParams } from "#lib/hooks/use-url-search-params";
 import { usePathname, useRouter } from "next/navigation";
 import { Step1, Step2, Step3, Step4, Step5, Step6 } from "./f2";
+import { useAdditionalContext } from "#lib/forms/shared/context";
 
 export const MultiStepForm = () => {
-  const {
-    stepper,
-    currentSchema,
-    isSaving,
-    isSubmitting,
-    setIsSaving,
-    setIsSubmitting,
-  } = useAdditionalContext();
+  const { stepper, isSaving, isSubmitting, setIsSaving, setIsSubmitting } =
+    useAdditionalContext();
   const pathname = usePathname();
   const { searchParams, createQueryString } = useURLSearchParams();
   const draftFromId = searchParams.get("form-id") as string;
@@ -122,7 +117,6 @@ export const MultiStepForm = () => {
   };
 
   const validateAndSetStep = async (newStepIndex: number) => {
-    const data = getValues();
     const isValid = await trigger();
     if (isValid) {
       setActiveStep(newStepIndex);

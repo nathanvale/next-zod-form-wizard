@@ -1,11 +1,6 @@
-import {
-  step1Schema,
-  step2Schema,
-  F2FieldData,
-  defaultValues,
-  AdditionalContext,
-} from "#lib/forms/f2";
+import { F2FieldData, defaultValues } from "#lib/forms/f2";
 import { useStepper } from "#lib/forms/hooks";
+import { AdditionalContext } from "#lib/forms/shared/context";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ReactNode, useState } from "react";
 import { useForm, FormProvider as RHFFormProvider } from "react-hook-form";
