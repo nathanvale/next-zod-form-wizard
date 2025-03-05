@@ -15,7 +15,17 @@ export const Providers = ({ children }: { children: React.ReactNode }) => (
   <ThemeProvider theme={theme}>
     <CssBaseline />
     <F2Provider>
-      <Container>{children}</Container>
+      <Container
+        maxWidth="lg"
+        sx={{
+          flexGrow: 1,
+          pb: { md: 3, xs: 2 },
+          pt: { md: 7, xs: 2 },
+          px: { md: 3, xs: 2 },
+        }}
+      >
+        {children}
+      </Container>
     </F2Provider>
   </ThemeProvider>
 );

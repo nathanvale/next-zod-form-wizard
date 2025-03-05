@@ -75,7 +75,7 @@ export const Step1 = () => {
             render={({ field }) => {
               const { label, description, placeholder } =
                 getMeta<Step1FieldNames>("representative.profile.firstName");
-              const error = errors.applicant?.profile?.firstName;
+              const error = errors.representative?.profile?.firstName;
               return (
                 <TextField
                   {...field}
@@ -100,7 +100,7 @@ export const Step1 = () => {
             render={({ field }) => {
               const { label, description, placeholder } =
                 getMeta<Step1FieldNames>("representative.profile.lastName");
-              const error = errors.applicant?.profile?.lastName;
+              const error = errors.representative?.profile?.lastName;
               return (
                 <TextField
                   {...field}

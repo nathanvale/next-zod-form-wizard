@@ -8,7 +8,8 @@ import { Step2 } from "../step-2";
 import { validateFormData } from "#lib/forms/shared/utils";
 import { H1, H2, H3 } from "../typography";
 import { Stepper } from "./stepper";
-import { FormActions } from "./form-actions";
+import { FormActions } from "./actions";
+import { FormToolbar } from "./toolbar";
 
 export const MultiStepForm = () => {
   const { progress, saveFormData, currentSchema } = useAdditionalContext();
@@ -22,6 +23,7 @@ export const MultiStepForm = () => {
     steps,
     stepsCompleted,
     totalStepsCompleted,
+    isAllStepsCompleted,
   } = progress;
 
   const onSubmit = async () => {
@@ -52,7 +54,7 @@ export const MultiStepForm = () => {
     }
   };
 
-  const handleNext = async () => {
+  const handleNext = async (C) => {
     if (activeStepIndex < totalSteps) {
       await validateAndSetStep(activeStepIndex + 1);
     }
@@ -65,7 +67,6 @@ export const MultiStepForm = () => {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <Stack gap={0}>
-        <Box mb={6} />
         <H1 hasOutline>Create lodgment</H1>
         <Box mb={3} />
         <H2>Unfair dismissal</H2>
@@ -78,16 +79,16 @@ export const MultiStepForm = () => {
           stepsCompleted={[]}
         />
         <Box mb={2} />
-        <H3 fontWeight={600} color="primary.main">
-          {activeStepIndex + 1}. Overview
-        </H3>
-        <CardContent sx={{ paddingBottom: 2, maxWidth: "42rem" }}>
-          <Typography>
-            If your employer has dismissed you, and you believe it was unfair,
-            you may be able to make a claim. Use Form F2.  Check you are ready
-            before you apply.
-          </Typography>
-        </CardContent>
+        <FormToolbar
+          // TODO: pass in a handleSave async
+          handleSave={() => Promise.resolve()}
+          saveMessage="Not saved yet"
+          // TODO: pass in a isSaving flag if the form is currently saving
+          isSaving={false}
+          saveHref="#"
+          title={`${activeStepIndex + 1}. Overview`}
+          description={`If your employer has dismissed you, and you believe it was unfair, you may be able to make a claim. Use Form F2.  Check you are ready before you apply.`}
+        />
         <Box mb={2} />
         {activeStepIndex === 0 && <Step1 />}
         {activeStepIndex === 1 && <Step2 />}
@@ -97,7 +98,7 @@ export const MultiStepForm = () => {
         {activeStepIndex === 5 && <Step2 />}
         <Box mb={3} />
         <FormActions
-          isAllStepsCompleted={false}
+          isAllStepsCompleted={isAllStepsCompleted}
           steps={steps}
           activeStepIndex={activeStepIndex}
           stepsCompleted={stepsCompleted}

@@ -73,11 +73,16 @@ export const components: Partial<Theme["components"]> = {
         padding: "0.375rem 1rem",
       },
       sizeSmall: {
-        fontSize: "0.8125rem",
+        fontSize: "0.875rem",
         letterSpacing: "0.02875rem",
         lineHeight: "1.375rem",
       },
-      text: {},
+      text: {
+        textDecoration: "underline", // Add underline by default
+        "&:hover": {
+          textDecoration: "none", // Remove underline on hover
+        },
+      },
     },
     variants: [
       {

@@ -24,7 +24,12 @@ export const Stepper = ({
 }: StepperProps) => {
   return (
     <Box sx={{ width: "100%" }}>
-      <MuiStepper nonLinear activeStep={activeStep} alternativeLabel>
+      <MuiStepper
+        nonLinear
+        activeStep={activeStep}
+        alternativeLabel
+        sx={{ width: "100%" }}
+      >
         {steps.map((label, index) => {
           const stepButtonProps: {
             optional?: React.ReactNode;
