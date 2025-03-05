@@ -24,7 +24,7 @@ const stepsData: StepsData[] = [
     isValid: false,
   },
   {
-    schema: step1Schema,
+    schema: step2Schema,
     title: "Employer",
     index: 2,
     isCurrent: false,
@@ -42,7 +42,7 @@ const stepsData: StepsData[] = [
     isValid: false,
   },
   {
-    schema: step1Schema,
+    schema: step2Schema,
     title: "Dismissal",
     index: 4,
     isCurrent: false,

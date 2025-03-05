@@ -10,6 +10,8 @@ import { H1, H2 } from "../typography";
 import { Stepper } from "./stepper";
 import { FormActions } from "./actions";
 import { FormToolbar } from "./toolbar";
+import { useURLSearchParams } from "#lib/forms/hooks/use-url-search-params";
+import { usePathname } from "next/navigation";
 
 export const MultiStepForm = () => {
   const {
@@ -21,6 +23,10 @@ export const MultiStepForm = () => {
     setIsSaving,
     setIsSubmitting,
   } = useAdditionalContext();
+  const pathname = usePathname()
+  const { searchParams,createQueryString } = useURLSearchParams();
+  const draftFromId = searchParams.get("form-id") as string;
+
   const {
     trigger,
     handleSubmit: handleRHFSubmit,
@@ -40,8 +46,9 @@ export const MultiStepForm = () => {
   } = stepper;
 
   const submitFormData = async (data: F2FormData) => {
+    console.log("submitFormData");
     try {
-      const response = await fetch("/api/submit-form-data", {
+      const response = await fetch("/api/lodgments", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -60,18 +67,34 @@ export const MultiStepForm = () => {
   };
 
   const saveFormData = async (data: F2FormData) => {
+    console.log("saveFormData");
+    // Get form's id if exist
     try {
-      const response = await fetch("/api/save-form-data", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to save form data");
+      if(!!draftFromId){
+        const response = await fetch(`/api/forms/${draftFromId}`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        });
+      }else{
+        const response = await fetch("/api/forms", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        });
+        console.log('>>>',response)
+        const url = `${pathname}?${createQueryString('form-id', )}`
+        // if (response.ok) window.location.replace = url
       }
+      
+
+      // if (!response.ok) {
+      //   throw new Error("Failed to save form data");
+      // }
 
       console.log("Data saved:", data);
     } catch (error) {
@@ -80,17 +103,16 @@ export const MultiStepForm = () => {
   };
 
   const handleSubmit = async () => {
+    console.log("handleSubmit");
     const data = getValues();
-    const validationResult = validateFormData(data, f2Schema);
-    if (validationResult) {
-      console.log("Final data:", validationResult);
-      setIsSubmitting(true);
-      await submitFormData(validationResult);
-      setIsSubmitting(false);
-    }
+    validateFormData(data, f2Schema);
+    setIsSubmitting(true);
+    await submitFormData(data);
+    setIsSubmitting(false);
   };
 
   const handleSave = async () => {
+    console.log("handleSave");
     const data = getValues();
     setIsSaving(true);
     await saveFormData(data);
@@ -98,24 +120,36 @@ export const MultiStepForm = () => {
   };
 
   const validateAndSetStep = async (newStepIndex: number) => {
+    console.log(
+      "validateAndSetStep function for the requested index",
+      newStepIndex
+    );
     const data = getValues();
+    console.log(`Validating step ${activeStepIndex}...`);
     validateFormData(data, currentSchema);
     const isValid = await trigger();
     if (isValid) {
+      console.log(
+        `Step ${activeStepIndex} is valid going to step ${newStepIndex}`
+      );
       setActiveStep(newStepIndex);
     } else {
+      console.log(`Step ${activeStepIndex} is invalid`);
       setActiveStep(activeStepIndex, { error: "Please fix errors" });
     }
   };
 
   const handleBack = async () => {
+    console.log("activeStepIndex", activeStepIndex);
     if (activeStepIndex > 0) {
       await validateAndSetStep(activeStepIndex - 1);
     }
   };
 
   const handleNext = async () => {
-    if (activeStepIndex < totalSteps) {
+    console.log("activeStepIndex", activeStepIndex);
+    console.log("totalSteps", totalSteps);
+    if (activeStepIndex < totalSteps - 1) {
       await validateAndSetStep(activeStepIndex + 1);
     } else {
       await handleSubmit();
@@ -123,6 +157,7 @@ export const MultiStepForm = () => {
   };
 
   const handleStep = (step: number) => async () => {
+    console.log("handleStep", step);
     await validateAndSetStep(step);
   };
 
@@ -152,9 +187,9 @@ export const MultiStepForm = () => {
         <Box mb={2} />
         {activeStepIndex === 0 && <Step1 />}
         {activeStepIndex === 1 && <Step2 />}
-        {activeStepIndex === 2 && <Step1 />}
+        {activeStepIndex === 2 && <Step2 />}
         {activeStepIndex === 3 && <Step2 />}
-        {activeStepIndex === 4 && <Step1 />}
+        {activeStepIndex === 4 && <Step2 />}
         {activeStepIndex === 5 && <Step2 />}
         <Box mb={3} />
         <FormActions

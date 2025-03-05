@@ -54,7 +54,6 @@ export function formatZodErrors(zodError: z.ZodError) {
 export function validateFormData(formData: any, zodSchema: z.ZodSchema) {
   try {
     const validationResult = zodSchema.parse(formData);
-    console.log("Final data:", validationResult.data);
     return validationResult.data;
   } catch (error) {
     if (error instanceof z.ZodError) {

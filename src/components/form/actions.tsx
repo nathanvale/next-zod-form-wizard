@@ -66,7 +66,7 @@ export const FormActions = ({
         )}
         {/* TODO - make this of type "submit" instead */}
         <Button variant={"contained"} loading={isSaving} onClick={handleNext}>
-          {totalStepsCompleted === steps.length - 1 ? "Submit" : "Next"}
+          {activeStepIndex === steps.length - 1 ? "Submit" : "Next"}
         </Button>
       </Box>
     </Box>
