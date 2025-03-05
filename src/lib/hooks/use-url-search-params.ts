@@ -5,12 +5,10 @@ export const useURLSearchParams = (): {
   searchParams: ReadonlyURLSearchParams;
   createQueryString: (key: string, value: string) => string;
 } => {
-  const searchParams = useSearchParams();
+  const searchParams = useSearchParams() ?? new URLSearchParams();
 
   const createQueryString = useCallback(
     (key: string, value: string) => {
-      //TODO remove ts-ignore
-      //@ts-ignore
       const params = new URLSearchParams(searchParams.toString());
       params.set(key, value);
 
@@ -18,7 +16,8 @@ export const useURLSearchParams = (): {
     },
     [searchParams]
   );
-  //TODO remove ts-ignore
-  //@ts-ignore
-  return { createQueryString, searchParams };
+  return {
+    createQueryString,
+    searchParams: searchParams as ReadonlyURLSearchParams,
+  };
 };

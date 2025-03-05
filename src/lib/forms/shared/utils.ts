@@ -51,14 +51,14 @@ export function formatZodErrors(zodError: z.ZodError) {
   return { errors };
 }
 
-export function validateFormData(formData: any, zodSchema: z.ZodSchema) {
+export function parseZodSchema(formData: any, zodSchema: z.ZodSchema) {
   try {
     const validationResult = zodSchema.parse(formData);
     return validationResult.data;
   } catch (error) {
     if (error instanceof z.ZodError) {
       console.error(formatZodErrors(error));
-      return;
+      throw error;
     }
     throw error;
   }

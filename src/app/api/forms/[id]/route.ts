@@ -3,17 +3,22 @@ import { NextRequest, NextResponse } from "next/server";
 
 export const POST = async (
   request: NextRequest,
-  { params }: { params: { id: string } },
+  { params }: { params: { id: string } }
 ): Promise<NextResponse<any> | NextResponse<any>> => {
-  const formData = request.body;
-  if (!params.id) {
-    throw new Error("Lodgment id doesn't exist.")
-  }
-  // Simulate saving data to a database or external service
   try {
-    // Replace this with actual saving logic
-    console.log("FORM SAVE:", params.id);
-    return NextResponse.json({ id: params.id,message: 'FORM UPDATE' });
+    if (!params.id) {
+      throw new Error("Lodgment id doesn't exist.");
+    }
+    // Simulate saving data to a database or external service
+    const formData = await request.json();
+    console.log("Form data received:", formData);
+    console.log("Saving a new draft form:", formData);
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+    return NextResponse.json({
+      formId: params.id,
+      message: "FORM UPDATE",
+      modifiedOn: `${Date.now()}`,
+    });
   } catch (error) {
     return NextResponse.json(
       { error: "Failed to save form data" },
@@ -21,5 +26,8 @@ export const POST = async (
     );
   }
 };
-//TODO: write get function. fetch from data using ID
-export const GET = ()=>{}
+
+//TODO: Implement GET method to fetch a saved form
+export const GET = () => {
+  return NextResponse.json({ message: "GET FORM" });
+};

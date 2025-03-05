@@ -1,25 +1,25 @@
 "use client";
 
 import { Card } from "#components/core/card";
-import { getMeta, Step2FieldData, Step2FieldNames } from "#lib/forms/f2";
+import { getMeta, Step6FieldData, Step6FieldNames } from "#lib/forms/f2";
 import { Stack, TextField } from "@mui/material";
 import { useFormContext, Controller } from "react-hook-form";
 
-export const Step2 = () => {
+export const Step6 = () => {
   const {
     control,
     formState: { errors },
-  } = useFormContext<Step2FieldData>();
+  } = useFormContext<Step6FieldData>();
   return (
     <Stack>
-      <Card variant="form" title="Interpreter">
-        <Controller<Step2FieldData, Step2FieldNames>
-          name={"interpreter"}
+      <Card variant="form" title="Height">
+        <Controller<Step6FieldData, Step6FieldNames>
+          name={"height"}
           control={control}
           render={({ field }) => {
             const { label, description, placeholder } =
-              getMeta<Step2FieldNames>("interpreter");
-            const error = errors.interpreter;
+              getMeta<Step6FieldNames>("height");
+            const error = errors.height;
             return (
               <TextField
                 {...field}

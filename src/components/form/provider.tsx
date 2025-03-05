@@ -1,11 +1,11 @@
 import {
   step1Schema,
   step2Schema,
-  F2FormData,
+  F2FieldData,
   defaultValues,
   AdditionalContext,
 } from "#lib/forms/f2";
-import { useStepper } from "#lib/forms/hooks/use-stepper";
+import { useStepper } from "#lib/forms/hooks";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ReactNode, useState } from "react";
 import { useForm, FormProvider as RHFFormProvider } from "react-hook-form";
@@ -28,20 +28,25 @@ export interface StepState {
   error?: string;
 }
 
-export interface StepsData extends StepMeta, StepState, StepSchema {}
+export interface FormData extends StepMeta, StepState, StepSchema {}
 
 export interface F2ProviderProps {
+  // The form steps
   children: ReactNode;
-  stepsState: StepState[];
-  stepsSchema: StepSchema[];
-  stepsMeta: StepMeta[];
+  // The state of each step
+  state: StepState[];
+  // The schema for the entire form
+  schema: z.ZodSchema;
+  // The schema for each step
+  schemas: StepSchema[];
+  // The metadata for each step (Label, Placeholder, etc.)
+  metaData: StepMeta[];
 }
 
 export const FormProvider = ({
   children,
-  stepsState,
-  stepsSchema,
-  stepsMeta,
+  schemas: stepsSchema,
+  metaData: stepsMeta,
 }: F2ProviderProps) => {
   const steps = stepsMeta.map(({ title }) => title);
   const stepper = useStepper({ steps, currentStep: 0 });
@@ -50,7 +55,7 @@ export const FormProvider = ({
   const [isSaving, setIsSaving] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const methods = useForm<F2FormData>({
+  const methods = useForm<F2FieldData>({
     resolver: zodResolver(currentSchema),
     defaultValues,
   });

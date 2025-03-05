@@ -3,7 +3,6 @@ import { z } from "zod";
 import {
   applicantSchema,
   representativeSchema,
-  respondentSchema,
 } from "#lib/forms/shared/schema";
 
 export const step1Schema = z.object({
@@ -28,9 +27,10 @@ export const step5Schema = z.object({
 });
 
 export const step6Schema = z.object({
-  height: z.string(),
+  height: z.string().min(1, "Height is required"),
 });
-export const f2Schema = step1Schema
+
+export const schema = step1Schema
   .merge(step2Schema)
   .merge(step3Schema)
   .merge(step4Schema)

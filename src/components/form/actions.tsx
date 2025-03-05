@@ -18,6 +18,7 @@ export interface FormActionsProps
   handleReset: () => void;
   handleDelete?: () => void;
   isSaving: boolean;
+  isSubmitting: boolean;
   deleteLabel?: string;
 }
 
@@ -33,6 +34,7 @@ export const FormActions = ({
   handleReset,
   handleDelete,
   isSaving,
+  isSubmitting,
   deleteLabel = "Delete",
   ...props
 }: FormActionsProps) => {
@@ -47,6 +49,7 @@ export const FormActions = ({
         {handleDelete && (
           <Button
             onClick={handleDelete}
+            disabled={isSaving || isSubmitting}
             startIcon={<DeleteOutline color="inherit" />}
           >
             {deleteLabel}
@@ -59,13 +62,18 @@ export const FormActions = ({
             variant="contained"
             color="secondary"
             onClick={handleBack}
-            loading={isSaving}
+            disabled={isSaving || isSubmitting}
           >
             Back
           </Button>
         )}
         {/* TODO - make this of type "submit" instead */}
-        <Button variant={"contained"} loading={isSaving} onClick={handleNext}>
+        <Button
+          variant={"contained"}
+          disabled={isSaving || isSubmitting}
+          loading={isSubmitting}
+          onClick={handleNext}
+        >
           {activeStepIndex === steps.length - 1 ? "Submit" : "Next"}
         </Button>
       </Box>

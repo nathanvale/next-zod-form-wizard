@@ -3,7 +3,7 @@ import { z } from "zod";
 import {
   step1Schema,
   step2Schema,
-  f2Schema,
+  schema,
   step3Schema,
   step4Schema,
   step5Schema,
@@ -32,7 +32,7 @@ type OmittedPathsUnion =
   | "respondent.contact"
   | "respondent.profile";
 
-export type F2OmittedPaths = Extract<Path<F2FormData>, OmittedPathsUnion>;
+export type F2OmittedPaths = Extract<Path<F2FieldData>, OmittedPathsUnion>;
 
 export type Step1OmittedPaths = Extract<
   Path<Step1FieldData>,
@@ -59,7 +59,7 @@ export type Step6OmittedPaths = Extract<
   OmittedPathsUnion
 >;
 
-export type F2FieldNames = Exclude<Path<F2FormData>, F2OmittedPaths>;
+export type F2FieldNames = Exclude<Path<F2FieldData>, F2OmittedPaths>;
 export type Step1FieldNames = Exclude<Path<Step1FieldData>, Step1OmittedPaths>;
 export type Step2FieldNames = Exclude<Path<Step2FieldData>, Step2OmittedPaths>;
 export type Step3FieldNames = Exclude<Path<Step3FieldData>, Step1OmittedPaths>;
@@ -77,4 +77,4 @@ export type Step3FieldData = z.infer<typeof step3Schema>;
 export type Step4FieldData = z.infer<typeof step4Schema>;
 export type Step5FieldData = z.infer<typeof step5Schema>;
 export type Step6FieldData = z.infer<typeof step6Schema>;
-export type F2FormData = z.infer<typeof f2Schema>;
+export type F2FieldData = z.infer<typeof schema>;

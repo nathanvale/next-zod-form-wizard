@@ -1,30 +1,32 @@
-import { f2Schema } from "#lib/forms/f2";
-import { validateFormData } from "#lib/forms/shared/utils";
+import { AnyZodTuple } from "./../../../../node_modules/zod/lib/types.d";
+import { schema } from "#lib/forms/f2";
+import { formatZodErrors, parseZodSchema } from "#lib/forms/shared/utils";
 import { NextRequest, NextResponse } from "next/server";
+import { z } from "zod";
 
 export const POST = async (
   request: NextRequest
 ): Promise<NextResponse<any> | NextResponse<any>> => {
-  const formData = request.body;
-
-  // Validate form data
-  const validationResult = validateFormData(formData, f2Schema);
-  if (!validationResult) {
-    return NextResponse.json({ error: "Invalid form data" }, { status: 400 });
-  }
-
-  // Simulate saving data to a database or external service
   try {
-    // Replace this with actual saving logic
-    console.log("SUBMIT LODGMENT:", validationResult);
+    // Simulate submitting a lodgment
+    const formData = await request.json();
+    console.log("Form data received:", formData);
+    parseZodSchema(formData, schema);
+    await new Promise((resolve) => setTimeout(resolve, 2000));
     return NextResponse.json(
-      { message: "SUBMIT LODGMENT successfully" },
+      { message: "Lodgment submitted successfully" },
       { status: 200 }
     );
   } catch (error) {
-    return NextResponse.json(
-      { error: "Failed to save form data" },
-      { status: 500 }
-    );
+    console.error("Error saving data:", error);
+    const errorMessage = "Failed to save form data";
+    if (error instanceof z.ZodError) {
+      const { errors } = formatZodErrors(error);
+      return NextResponse.json(
+        { error: errorMessage, errors },
+        { status: 400 }
+      );
+    }
+    return NextResponse.json({ error: errorMessage }, { status: 500 });
   }
 };

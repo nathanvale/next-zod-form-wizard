@@ -2,7 +2,7 @@
 
 import { createContext, useContext } from "react";
 import { z } from "zod";
-import { useStepper } from "../hooks/use-stepper";
+import { useStepper } from "../hooks";
 
 export interface AdditionalState {
   currentSchema: z.ZodSchema;

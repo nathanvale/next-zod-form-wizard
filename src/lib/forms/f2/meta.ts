@@ -1,6 +1,6 @@
 import { FieldMeta } from "#lib/forms/shared/types";
 import { FieldValues, Path } from "react-hook-form";
-import { F2FieldNames, F2FormData } from "./types";
+import { F2FieldNames, F2FieldData } from "./types";
 import {
   META_ABN,
   META_CITY,
@@ -64,8 +64,8 @@ const metadataObject: Record<F2FieldNames, FieldMeta> = {
   },
 };
 
-const f2MetadataMap = new Map<Path<F2FormData>, FieldMeta>(
-  Object.entries(metadataObject) as [Path<F2FormData>, FieldMeta][]
+const f2MetadataMap = new Map<Path<F2FieldData>, FieldMeta>(
+  Object.entries(metadataObject) as [Path<F2FieldData>, FieldMeta][]
 );
 
 export function getMeta<T = F2FieldNames>(key: T): FieldMeta {

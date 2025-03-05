@@ -16,6 +16,7 @@ export interface FormToolbarProps
   extends Omit<StackProps, "children" | "title"> {
   handleSave: () => Promise<void>;
   isSaving: boolean;
+  isSubmitting: boolean;
   saveMessage?: string;
   saveHref: string;
   title: React.ReactNode;
@@ -25,6 +26,7 @@ export interface FormToolbarProps
 export const FormToolbar = ({
   handleSave,
   isSaving,
+  isSubmitting,
   saveMessage = "Not saved yet",
   saveHref,
   title,
@@ -48,6 +50,7 @@ export const FormToolbar = ({
             size="small"
             data-auto-save
             onClick={handleSave}
+            disabled={isSaving || isSubmitting}
             loading={isSaving}
           >
             Save
@@ -57,6 +60,7 @@ export const FormToolbar = ({
             variant="text"
             size="small"
             href={saveHref}
+            disabled={isSaving || isSubmitting}
             data-auto-save
           >
             Save & Exit
