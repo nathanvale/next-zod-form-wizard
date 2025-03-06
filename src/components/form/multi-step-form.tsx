@@ -3,7 +3,7 @@
 import { F2FieldValues } from "#lib/forms/f2";
 import { Box, Stack } from "@mui/material";
 import { useFormContext } from "react-hook-form";
-import { parseZodSchema } from "#lib/forms/shared/utils";
+import { parseZodSchema } from "#lib/forms/utils";
 import { H1, H2 } from "../typography";
 import { Stepper } from "./stepper";
 import { FormActions } from "./actions";

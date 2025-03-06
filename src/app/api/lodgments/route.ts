@@ -1,6 +1,6 @@
 import { AnyZodTuple } from "./../../../../node_modules/zod/lib/types.d";
 import { schema } from "#lib/forms/f2";
-import { formatZodErrors, parseZodSchema } from "#lib/forms/shared/utils";
+import { formatZodErrors, parseZodSchema } from "#lib/forms/utils";
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 

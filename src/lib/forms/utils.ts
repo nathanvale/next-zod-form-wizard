@@ -1,6 +1,4 @@
-import { z } from "zod";
-import { createDocument, createSchema } from "zod-openapi";
-import { schema } from "../f2";
+import { z, ZodSchema } from "zod";
 
 export function formatZodErrors(zodError: z.ZodError) {
   const errors = zodError.errors.reduce((acc, error) => {
@@ -25,4 +23,18 @@ export function parseZodSchema(formData: any, zodSchema: z.ZodSchema) {
   }
 }
 
-export const openApiSchema = createSchema(schema);
+export function fetchSchema(
+  id: string,
+  formSchemas: Record<string, ZodSchema>
+): ZodSchema | null {
+  if (!id) {
+    throw new Error("Lodgment id doesn't exist.");
+  }
+
+  const schema = formSchemas[id];
+  if (!schema) {
+    return null;
+  }
+
+  return schema;
+}

@@ -1,8 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import { generateMock } from "@anatine/zod-mock";
 import { createSchema } from "zod-openapi";
-import { ZodSchema } from "zod";
 import { formSchemas } from "#lib/forms";
+import { fetchSchema } from "#lib/forms/utils";
 
 export const GET = async (
   request: NextRequest,
@@ -10,14 +9,7 @@ export const GET = async (
 ): Promise<NextResponse<any>> => {
   console.error("Fetching form schema for:", params);
   try {
-    if (!params.id) {
-      throw new Error("Lodgment id doesn't exist.");
-    }
-    console.error(params);
-    const { id } = params;
-
-    const schema = (formSchemas as Record<string, ZodSchema>)[id];
-
+    const schema = fetchSchema(params.id, formSchemas);
     if (!schema) {
       return NextResponse.json({ error: "Schema not found" }, { status: 404 });
     }
