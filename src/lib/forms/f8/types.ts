@@ -1,4 +1,4 @@
-import { Step1 } from "../../../components/form/f2/step-1";
+import { Step1 } from "../../../components2/form/f2/step-1";
 import { z } from "zod";
 import {
   step1Schema,

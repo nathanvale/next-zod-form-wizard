@@ -3,7 +3,11 @@
 import { F2FieldValues } from "#lib/forms/f2";
 import { Box, Stack } from "@mui/material";
 import { useFormContext } from "react-hook-form";
-import { parseZodSchema } from "#lib/forms/utils";
+import {
+  formatZodErrors,
+  parseZodSchema,
+  validateSchemaWithValues,
+} from "#lib/forms/utils";
 import { H1, H2 } from "../typography";
 import { Stepper } from "./stepper";
 import { FormActions } from "./actions";
@@ -12,10 +16,18 @@ import { useURLSearchParams } from "#lib/hooks/use-url-search-params";
 import { usePathname, useRouter } from "next/navigation";
 import { Step1, Step2, Step3, Step4, Step5, Step6 } from "./f2";
 import { useAdditionalContext } from "#lib/forms/shared/context";
+import { z } from "zod";
+import { get } from "http";
 
 export const MultiStepForm = () => {
-  const { stepper, isSaving, isSubmitting, setIsSaving, setIsSubmitting } =
-    useAdditionalContext();
+  const {
+    stepper,
+    isSaving,
+    isSubmitting,
+    setIsSaving,
+    setIsSubmitting,
+    formSchema,
+  } = useAdditionalContext();
   const pathname = usePathname();
   const { searchParams, createQueryString } = useURLSearchParams();
   const draftFromId = searchParams.get("form-id") as string;
@@ -41,7 +53,7 @@ export const MultiStepForm = () => {
 
   const submitFormData = async (data: F2FieldValues) => {
     try {
-      const response = await fetch("/api/lodgments", {
+      const response = await fetch("/api/lodgments-mock", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -63,7 +75,7 @@ export const MultiStepForm = () => {
     try {
       if (!!draftFromId) {
         // Update existing saved draft form
-        const response = await fetch(`/api/forms/${draftFromId}`, {
+        const response = await fetch(`/api/forms-mock/${draftFromId}`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -76,7 +88,7 @@ export const MultiStepForm = () => {
         console.log("update call:", modifiedOn);
       } else {
         // Create a new draft form
-        const response = await fetch("/api/forms", {
+        const response = await fetch("/api/forms-mock", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -99,8 +111,9 @@ export const MultiStepForm = () => {
   };
 
   const handleSubmit = async () => {
-    const data = getValues();
     const isValid = await trigger();
+    const data = getValues();
+    validateSchemaWithValues(data, formSchema);
     if (!isValid) {
       return;
     }
@@ -118,6 +131,8 @@ export const MultiStepForm = () => {
 
   const validateAndSetStep = async (newStepIndex: number) => {
     const isValid = await trigger();
+    const data = getValues();
+    validateSchemaWithValues(data, formSchema);
     if (isValid) {
       setActiveStep(newStepIndex);
     } else {

@@ -5,12 +5,13 @@ import { z } from "zod";
 import { useStepper } from "../hooks";
 
 export interface AdditionalState {
-  currentSchema: z.ZodSchema;
+  currentStepSchema: z.ZodSchema;
   stepper: ReturnType<typeof useStepper>;
   isSaving: boolean;
   isSubmitting: boolean;
   setIsSaving: (value: boolean) => void;
   setIsSubmitting: (value: boolean) => void;
+  formSchema: z.ZodSchema;
 }
 
 export const AdditionalContext = createContext<AdditionalState | undefined>(

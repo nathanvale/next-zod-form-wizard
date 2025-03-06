@@ -38,3 +38,14 @@ export function fetchSchema(
 
   return schema;
 }
+
+export function validateSchemaWithValues(data: any, schema: ZodSchema) {
+  try {
+    schema.parse(data);
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      console.error(formatZodErrors(error));
+    }
+  }
+  return data;
+}

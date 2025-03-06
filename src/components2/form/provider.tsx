@@ -49,18 +49,19 @@ export interface F2ProviderProps<T extends FieldValues> {
 export const FormProvider = <T extends FieldValues>({
   children,
   schemas: stepsSchema,
+  schema: formSchema,
   metaData: stepsMeta,
   defaultValues,
 }: F2ProviderProps<T>) => {
   const steps = stepsMeta.map(({ title }) => title);
   const stepper = useStepper({ steps, currentStep: 0 });
   const schemas = stepsSchema.map(({ schema }) => schema);
-  const currentSchema = schemas[stepper.activeStep.index];
+  const currentStepSchema = schemas[stepper.activeStep.index];
   const [isSaving, setIsSaving] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const methods = useForm<T>({
-    resolver: zodResolver(currentSchema),
+    resolver: zodResolver(currentStepSchema),
     defaultValues,
   });
 
@@ -68,11 +69,12 @@ export const FormProvider = <T extends FieldValues>({
     <AdditionalContext.Provider
       value={{
         stepper,
-        currentSchema,
+        currentStepSchema,
         isSaving,
         isSubmitting,
         setIsSaving,
         setIsSubmitting,
+        formSchema,
       }}
     >
       <RHFFormProvider {...methods}>{children}</RHFFormProvider>

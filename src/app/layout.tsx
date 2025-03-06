@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Lato } from "next/font/google";
-import { Providers } from "../components/providers";
+import { Providers } from "../components2/providers";
 
 export const metadata: Metadata = {
   title: "Create Next App",

@@ -1,4 +1,4 @@
-import { AnyZodTuple } from "./../../../../node_modules/zod/lib/types.d";
+import { AnyZodTuple } from "../../../../node_modules/zod/lib/types";
 import { schema } from "#lib/forms/f2";
 import { formatZodErrors, parseZodSchema } from "#lib/forms/utils";
 import { NextRequest, NextResponse } from "next/server";
