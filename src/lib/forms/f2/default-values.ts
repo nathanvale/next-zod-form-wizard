@@ -21,7 +21,6 @@ export const defaultValues: F2FieldValues = {
     profile: {
       firstName: "",
       lastName: "",
-      phone: "",
     },
   },
   representative: {
@@ -44,7 +43,6 @@ export const defaultValues: F2FieldValues = {
     profile: {
       firstName: "",
       lastName: "",
-      phone: "",
     },
   },
   accessibility: "",

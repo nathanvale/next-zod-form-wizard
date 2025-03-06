@@ -1,5 +1,8 @@
-import { z } from "zod";
+import { z, ZodSchema } from "zod";
 import { abnSchema, addressSchema, contactSchema } from "./schema";
+
+export type FormId = "f2";
+
 export type FieldMeta = {
   label: string;
   placeholder?: string;

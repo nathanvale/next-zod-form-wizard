@@ -13,6 +13,7 @@ export const POST = async (
     console.log("Form data received:", formData);
     parseZodSchema(formData, schema);
     await new Promise((resolve) => setTimeout(resolve, 2000));
+
     return NextResponse.json(
       { message: "Lodgment submitted successfully" },
       { status: 200 }

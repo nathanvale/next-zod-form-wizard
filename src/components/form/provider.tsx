@@ -13,6 +13,8 @@ import { z } from "zod";
 export interface StepSchema {
   schema: z.ZodSchema;
 }
+
+//TODO: extend from the typescript library
 export interface StepMeta {
   title: string;
   description?: ReactNode;
@@ -36,9 +38,9 @@ export interface F2ProviderProps<T extends FieldValues> {
   state: StepState[];
   // The schema for the entire form
   schema: z.ZodSchema;
-  // The schema for each step
+  // The schemas for each step
   schemas: StepSchema[];
-  // The metadata for each step (Label, Placeholder, etc.)
+  // The metadata for each field (Label, Placeholder, etc.)
   metaData: StepMeta[];
   // The default values for the form
   defaultValues: DefaultValues<T>;
