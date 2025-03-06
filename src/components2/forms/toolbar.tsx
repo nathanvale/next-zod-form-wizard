@@ -1,7 +1,6 @@
 import Link from "next/link";
 import {
   Box,
-  BoxProps,
   Button,
   CardContent,
   Stack,
@@ -15,6 +14,7 @@ import React from "react";
 export interface FormToolbarProps
   extends Omit<StackProps, "children" | "title"> {
   handleSave: () => Promise<void>;
+  handleSaveAndExit: () => Promise<void>;
   isSaving: boolean;
   isSubmitting: boolean;
   savedMessage: string;
@@ -31,6 +31,7 @@ export const FormToolbar = ({
   saveHref,
   title,
   description,
+  handleSaveAndExit,
   ...props
 }: FormToolbarProps) => {
   return (
@@ -62,6 +63,7 @@ export const FormToolbar = ({
             href={saveHref}
             disabled={isSaving || isSubmitting}
             data-auto-save
+            onClick={handleSaveAndExit}
           >
             Save & Exit
           </Button>

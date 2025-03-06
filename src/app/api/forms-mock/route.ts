@@ -5,9 +5,6 @@ export const POST = async (
 ): Promise<NextResponse<any> | NextResponse<any>> => {
   try {
     // Simulate saving data to a database or external service
-    const formData = await request.json();
-    console.log("Form data received:", formData);
-    console.log("Saving to an exisitng draft form:", formData);
     await new Promise((resolve) => setTimeout(resolve, 1000));
     return NextResponse.json(
       {
@@ -18,7 +15,6 @@ export const POST = async (
       { status: 200 }
     );
   } catch (error) {
-    console.error("Error saving data:", error);
     return NextResponse.json(
       {
         status: 500,

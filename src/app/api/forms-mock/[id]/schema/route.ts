@@ -7,11 +7,13 @@ export const GET = async (
   request: NextRequest,
   { params }: { params: { id: string } }
 ): Promise<NextResponse<any>> => {
-  console.error("Fetching form schema for:", params);
   try {
     const schema = fetchSchema(params.id, formSchemas);
     if (!schema) {
-      return NextResponse.json({ error: "Schema not found" }, { status: 404 });
+      return NextResponse.json(
+        { status: 404, message: "Schema not found" },
+        { status: 404 }
+      );
     }
     const openApiSchema = createSchema(schema);
 
@@ -19,8 +21,9 @@ export const GET = async (
   } catch (error) {
     return NextResponse.json(
       {
-        error: "Failed to fetch form schema",
-        message: (error as Error).message,
+        status: 500,
+        error: "Internal Server Error",
+        message: "An unexpected error occurred. Please try again later.",
       },
       { status: 500 }
     );

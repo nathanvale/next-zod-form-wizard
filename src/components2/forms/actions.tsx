@@ -14,7 +14,7 @@ export interface FormActionsProps
     StackProps {
   handleNext: () => void;
   handleBack: () => void;
-  handleComplete: () => void;
+  handleSubmit: () => void;
   handleReset: () => void;
   handleDelete?: () => void;
   isSaving: boolean;
@@ -30,7 +30,7 @@ export const FormActions = ({
   totalStepsCompleted,
   handleNext,
   handleBack,
-  handleComplete,
+  handleSubmit,
   handleReset,
   handleDelete,
   isSaving,
@@ -74,7 +74,7 @@ export const FormActions = ({
           variant={"contained"}
           disabled={isSaving || isSubmitting}
           loading={isSubmitting}
-          onClick={handleNext}
+          onClick={isSubmitable ? handleSubmit : handleNext}
           data-auto-save={!isSubmitable}
         >
           {isSubmitable ? "Submit" : "Next"}

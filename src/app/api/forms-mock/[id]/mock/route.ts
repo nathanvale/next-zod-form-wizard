@@ -11,7 +11,10 @@ export const GET = async (
   try {
     const schema = fetchSchema(params.id, formSchemas);
     if (!schema) {
-      return NextResponse.json({ error: "Schema not found" }, { status: 404 });
+      return NextResponse.json(
+        { status: 400, message: "Schema not found" },
+        { status: 404 }
+      );
     }
     const mockData = generateMock(schema);
 
@@ -19,8 +22,9 @@ export const GET = async (
   } catch (error) {
     return NextResponse.json(
       {
-        error: "Failed to fetch form schema",
-        message: (error as Error).message,
+        status: 500,
+        error: "Internal Server Error",
+        message: "An unexpected error occurred. Please try again later.",
       },
       { status: 500 }
     );

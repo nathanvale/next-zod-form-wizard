@@ -1,4 +1,3 @@
-import { NextApiRequest, NextApiResponse } from "next";
 import { NextRequest, NextResponse } from "next/server";
 
 export const POST = async (
@@ -10,13 +9,10 @@ export const POST = async (
       throw new Error("Lodgment id doesn't exist.");
     }
     // Simulate saving data to a database or external service
-    const formData = await request.json();
-    console.log("Form data received:", formData);
-    console.log("Saving a new draft form:", formData);
     await new Promise((resolve) => setTimeout(resolve, 1000));
     return NextResponse.json({
       status: 200,
-      message: "Form successfully update",
+      message: "Form successfully updated",
       data: {
         formId: params.id,
         modifiedOn: `${Date.now()}`,
@@ -24,13 +20,12 @@ export const POST = async (
     });
   } catch (error) {
     return NextResponse.json(
-      { error: "Failed to save form data" },
+      {
+        status: 500,
+        error: "Internal Server Error",
+        message: "An unexpected error occurred. Please try again later.",
+      },
       { status: 500 }
     );
   }
-};
-
-//TODO: Implement GET method to fetch a saved form
-export const GET = () => {
-  return NextResponse.json({ message: "GET FORM" });
 };

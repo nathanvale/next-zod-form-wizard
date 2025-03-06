@@ -110,6 +110,12 @@ export const Form = ({
     setIsSubmitting(false);
   };
 
+  const handleSaveAndExit = async () => {
+    await handleInteralSave();
+    //TODO: Redirect to the dashboard page
+    console.log("Save and Exit");
+  };
+
   const handleInternalSubmit = async () => {
     const isValid = await validate();
     if (!isValid) {
@@ -149,6 +155,7 @@ export const Form = ({
           <Box mb={2} />
           <FormToolbar
             handleSave={handleInteralSave}
+            handleSaveAndExit={handleSaveAndExit}
             savedMessage={savedMessage}
             isSaving={isSaving}
             saveHref="#"
@@ -168,7 +175,7 @@ export const Form = ({
             totalStepsCompleted={totalStepsCompleted}
             handleNext={handleNext}
             handleBack={handleBack}
-            handleComplete={handleInternalSubmit}
+            handleSubmit={handleInternalSubmit}
             handleReset={handleReset}
             // TODO: pass in a hanldleDelete function if the user has a draftId
             handleDelete={undefined}

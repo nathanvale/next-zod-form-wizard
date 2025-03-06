@@ -11,7 +11,6 @@ export const useDraftFormId = () => {
   );
 
   useEffect(() => {
-    console.log("hook draftFormId", draftFormId);
     if (!draftFormId) {
       return;
     }

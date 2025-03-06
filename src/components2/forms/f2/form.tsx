@@ -82,7 +82,6 @@ const metaData = data.map(({ title, index, description }) => ({
 export const F2Form = () => {
   const { draftFormId, setDraftFormId } = useDraftFormId();
   const [lastSaved, setLastSaved] = useState<number | undefined>();
-  console.log("draftFormId:", draftFormId);
   const handleSave = async (data: F2FieldValues) => {
     try {
       if (!draftFormId) {
