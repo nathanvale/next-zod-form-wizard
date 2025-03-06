@@ -56,7 +56,7 @@ export const step5Schema = z.object({
 });
 
 export const step6Schema = z.object({
-  test: z.string().min(1, { message: "This is a test" }),
+  height: z.string().min(1, { message: "This is a test" }),
 });
 
 export const schema = hiddenSchema

@@ -94,6 +94,7 @@ export const F2Form = () => {
           },
         });
         const { formId, modifiedOn } = response.data;
+        console.log("save call:", modifiedOn);
         setLastSaved(modifiedOn);
         setDraftFormId(formId);
       } else {
@@ -109,6 +110,7 @@ export const F2Form = () => {
         );
         const { modifiedOn } = response.data;
         setLastSaved(modifiedOn);
+        console.log(response);
         console.log("update call:", modifiedOn);
       }
     } catch (error) {

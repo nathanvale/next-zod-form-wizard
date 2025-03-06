@@ -5,7 +5,7 @@ import { FormActions } from "../actions";
 import { FormToolbar } from "../toolbar";
 import { H1, H2 } from "../../typography";
 import { useAdditionalContext } from "#lib/forms/shared/context";
-import { validateSchemaWithValues } from "#lib/forms/utils";
+import { consoleLogAnySchemaErrors } from "#lib/forms/utils";
 import { FieldValuesTypes } from "#lib/forms/shared/types";
 import { Children, ReactElement, useEffect, useState } from "react";
 import { useLastSaved } from "#lib/forms/hooks";
@@ -68,7 +68,7 @@ export const Form = ({
   const validate = async () => {
     const isValid = await trigger();
     const data = getValues();
-    validateSchemaWithValues(data, formSchema);
+    consoleLogAnySchemaErrors(data, formSchema);
     return isValid;
   };
 
@@ -153,7 +153,7 @@ export const Form = ({
             isSaving={isSaving}
             saveHref="#"
             isSubmitting={isSubmitting}
-            title={title}
+            title={`${activeStepIndex + 1}. ${steps[activeStepIndex]}`}
             // TODO: This is actually tied to a step so need to get it from step.description
             description={`If your employer has dismissed you, and you believe it was unfair, you may be able to make a claim. Use Form F2.  Check you are ready before you apply.`}
           />

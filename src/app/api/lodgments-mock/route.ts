@@ -1,8 +1,9 @@
 import { AnyZodTuple } from "../../../../node_modules/zod/lib/types";
 import { schema } from "#lib/forms/f2";
-import { formatZodErrors, parseZodSchema } from "#lib/forms/utils";
+import { formatZodErrors } from "#lib/forms/utils";
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
+import { stat } from "fs";
 
 export const POST = async (
   request: NextRequest
@@ -11,7 +12,7 @@ export const POST = async (
     // Simulate submitting a lodgment
     const formData = await request.json();
     console.log("Form data received:", formData);
-    parseZodSchema(formData, schema);
+    schema.parse(formData);
     await new Promise((resolve) => setTimeout(resolve, 2000));
 
     return NextResponse.json(
@@ -20,14 +21,22 @@ export const POST = async (
     );
   } catch (error) {
     console.error("Error saving data:", error);
-    const errorMessage = "Failed to save form data";
+    const errorMessage = "Bad Request: Invalid form data submitted.";
     if (error instanceof z.ZodError) {
       const { errors } = formatZodErrors(error);
       return NextResponse.json(
-        { error: errorMessage, errors },
+        {
+          status: 400,
+          error: "Bad Request",
+          message: "Invalid input data",
+          details: errors,
+        },
         { status: 400 }
       );
     }
-    return NextResponse.json({ error: errorMessage }, { status: 500 });
+    return NextResponse.json(
+      { message: errorMessage, error: "Bad Request" },
+      { status: 500 }
+    );
   }
 };

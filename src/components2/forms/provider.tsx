@@ -54,6 +54,7 @@ export const FormProvider = ({
   schema: formSchema,
   metaData: stepsMeta,
   defaultValues,
+  lastSaved,
 }: F2ProviderProps) => {
   const steps = stepsMeta.map(({ title }) => title);
   const stepper = useStepper({ steps, currentStep: 0 });
@@ -61,7 +62,6 @@ export const FormProvider = ({
   const currentStepSchema = schemas[stepper.activeStep.index];
   const [isSaving, setIsSaving] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [lastSaved] = useState<number | undefined>(undefined);
 
   const methods = useForm({
     resolver: zodResolver(currentStepSchema),

@@ -3,24 +3,19 @@ import { z, ZodSchema } from "zod";
 export function formatZodErrors(zodError: z.ZodError) {
   const errors = zodError.errors.reduce((acc, error) => {
     const path = error.path.join(".");
-    acc[path] = error.message;
-    return acc;
-  }, {} as Record<string, string>);
-  return { errors };
-}
-
-export function parseZodSchema(formData: any, zodSchema: z.ZodSchema) {
-  try {
-    //TODO make sure there are no optional fields in the schema
-    const validationResult = zodSchema.parse(formData);
-    return validationResult.data;
-  } catch (error) {
-    if (error instanceof z.ZodError) {
-      console.error(formatZodErrors(error));
-      throw error;
+    if (!acc[path]) {
+      acc[path] = [];
     }
-    throw error;
-  }
+    acc[path].push(error.message);
+    return acc;
+  }, {} as Record<string, string[]>);
+
+  const formattedErrors = Object.entries(errors).map(([field, errors]) => ({
+    field,
+    errors,
+  }));
+
+  return { errors: formattedErrors };
 }
 
 export function fetchSchema(
@@ -39,7 +34,7 @@ export function fetchSchema(
   return schema;
 }
 
-export function validateSchemaWithValues(data: any, schema: ZodSchema) {
+export function consoleLogAnySchemaErrors(data: any, schema: ZodSchema) {
   try {
     schema.parse(data);
   } catch (error) {
@@ -47,5 +42,4 @@ export function validateSchemaWithValues(data: any, schema: ZodSchema) {
       console.error(formatZodErrors(error));
     }
   }
-  return data;
 }
