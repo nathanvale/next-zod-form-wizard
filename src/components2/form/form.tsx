@@ -6,10 +6,11 @@ import { FormToolbar } from "./toolbar";
 import { H1, H2 } from "../typography";
 import { useAdditionalContext } from "#lib/forms/shared/context";
 import { validateSchemaWithValues } from "#lib/forms/utils";
+import { FieldValuesTypes } from "#lib/forms/shared/types";
 
 export interface FormProps {
-  handleSubmit: (data: FieldValues) => Promise<void>;
-  handleSave: (data: FieldValues) => Promise<void>;
+  handleSubmit: (data: FieldValuesTypes) => Promise<void>;
+  handleSave: (data: FieldValuesTypes) => Promise<void>;
   title: string;
   description: string;
   subtitle: string;

@@ -1,7 +1,10 @@
+import { F2FieldValues } from "#lib/forms/f2";
 import { z, ZodSchema } from "zod";
 import { organisationSchema, addressSchema, contactSchema } from "./schema";
 
 export type FormId = "f2" | "f8";
+
+export type FieldValuesTypes = F2FieldValues; // | F8FieldValues;
 
 export type FieldMeta = {
   label: string;

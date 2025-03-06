@@ -9,7 +9,7 @@ import {
   step5Schema,
   step6Schema,
 } from "./schema";
-import { Path } from "react-hook-form";
+import { FieldValue, FieldValues, Path } from "react-hook-form";
 
 type OmittedPathsUnion =
   | "applicant"

@@ -6,6 +6,7 @@ import {
   useForm,
   FormProvider as RHFFormProvider,
   DefaultValues,
+  FieldValues,
 } from "react-hook-form";
 import { z } from "zod";
 
@@ -42,7 +43,7 @@ export interface F2ProviderProps {
   // The metadata for each field (Label, Placeholder, etc.)
   metaData: StepMeta[];
   // The default values for the form
-  defaultValues: DefaultValues;
+  defaultValues: DefaultValues<FieldValues>;
 }
 
 export const FormProvider = ({
@@ -59,7 +60,7 @@ export const FormProvider = ({
   const [isSaving, setIsSaving] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const methods = useForm<T>({
+  const methods = useForm({
     resolver: zodResolver(currentStepSchema),
     defaultValues,
   });
