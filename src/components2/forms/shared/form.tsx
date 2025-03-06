@@ -8,6 +8,7 @@ import { useAdditionalContext } from "#lib/forms/shared/context";
 import { validateSchemaWithValues } from "#lib/forms/utils";
 import { FieldValuesTypes } from "#lib/forms/shared/types";
 import { Children, ReactElement, useEffect, useState } from "react";
+import { useLastSaved } from "#lib/forms/hooks";
 
 export interface FormProps {
   handleSubmit: (data: FieldValuesTypes) => Promise<void>;
@@ -54,6 +55,7 @@ export const Form = ({
 
   const [openModal, setOpenModal] = useState(false);
   const [queuedStep, setQueuedStep] = useState<number | undefined>();
+  const { message: savedMessage } = useLastSaved(lastSaved);
 
   useEffect(() => {
     setQueuedStep(undefined);
@@ -136,7 +138,7 @@ export const Form = ({
           <Box mb={2} />
           <FormToolbar
             handleSave={handleInteralSave}
-            savedMessage="Not saved yet"
+            savedMessage={savedMessage}
             isSaving={isSaving}
             saveHref="#"
             isSubmitting={isSubmitting}
