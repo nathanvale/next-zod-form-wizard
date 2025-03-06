@@ -9,7 +9,7 @@ import {
   Typography,
 } from "@mui/material";
 import { CloudDone } from "@mui/icons-material";
-import { Body2, H3 } from "../typography";
+import { Body2, H3 } from "../core/typography";
 import React from "react";
 
 export interface FormToolbarProps

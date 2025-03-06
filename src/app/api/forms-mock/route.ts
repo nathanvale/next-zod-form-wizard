@@ -8,15 +8,23 @@ export const POST = async (
     const formData = await request.json();
     console.log("Form data received:", formData);
     console.log("Saving to an exisitng draft form:", formData);
-    await new Promise((resolve) => setTimeout(resolve, 2000));
+    await new Promise((resolve) => setTimeout(resolve, 1000));
     return NextResponse.json(
-      { formId: "123456789", modifiedOn: `${Date.now()}` },
+      {
+        status: 200,
+        message: "Form successfully saved",
+        data: { formId: "123456789", modifiedOn: `${Date.now()}` },
+      },
       { status: 200 }
     );
   } catch (error) {
     console.error("Error saving data:", error);
     return NextResponse.json(
-      { error: "Failed to save form data" },
+      {
+        status: 500,
+        error: "Internal Server Error",
+        message: "An unexpected error occurred. Please try again later.",
+      },
       { status: 500 }
     );
   }

@@ -13,11 +13,14 @@ export const POST = async (
     const formData = await request.json();
     console.log("Form data received:", formData);
     console.log("Saving a new draft form:", formData);
-    await new Promise((resolve) => setTimeout(resolve, 2000));
+    await new Promise((resolve) => setTimeout(resolve, 1000));
     return NextResponse.json({
-      formId: params.id,
-      message: "FORM UPDATE",
-      modifiedOn: `${Date.now()}`,
+      status: 200,
+      message: "Form successfully update",
+      data: {
+        formId: params.id,
+        modifiedOn: `${Date.now()}`,
+      },
     });
   } catch (error) {
     return NextResponse.json(

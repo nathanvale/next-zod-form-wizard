@@ -3,7 +3,7 @@ import { useFormContext } from "react-hook-form";
 import { Stepper } from "../stepper";
 import { FormActions } from "../actions";
 import { FormToolbar } from "../toolbar";
-import { H1, H2 } from "../../typography";
+import { H1, H2 } from "../../core/typography";
 import { useAdditionalContext } from "#lib/forms/shared/context";
 import { consoleLogAnySchemaErrors } from "#lib/forms/utils";
 import { FieldValuesTypes } from "#lib/forms/shared/types";

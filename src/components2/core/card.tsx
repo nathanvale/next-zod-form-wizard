@@ -7,7 +7,7 @@ import {
 } from "@mui/material";
 
 import { toSentenceCase } from "#lib/utils";
-import { Body2, H3 } from "../typography";
+import { Body2, H3 } from "./typography";
 
 export interface CardProps extends Omit<MUICardProps, "title" | "variant"> {
   actionButtons?: React.ReactNode;

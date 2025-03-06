@@ -1,5 +1,3 @@
-import { useURLSearchParams } from "#lib/hooks/use-url-search-params";
-import { usePathname, useRouter } from "next/navigation";
 import { Form } from "../shared/form";
 import { Step1 } from "./step-1";
 import { Step2 } from "./step-2";
@@ -84,21 +82,21 @@ const metaData = data.map(({ title, index, description }) => ({
 export const F2Form = () => {
   const { draftFormId, setDraftFormId } = useDraftFormId();
   const [lastSaved, setLastSaved] = useState<number | undefined>();
+  console.log("draftFormId:", draftFormId);
   const handleSave = async (data: F2FieldValues) => {
     try {
-      if (draftFormId) {
-        // Create a new draft form
+      if (!draftFormId) {
+        // Save a new draft form
         const response = await axios.post("/api/forms-mock", data, {
           headers: {
             "Content-Type": "application/json",
           },
         });
-        const { formId, modifiedOn } = response.data;
-        console.log("save call:", modifiedOn);
+        const { formId, modifiedOn } = response.data.data;
         setLastSaved(modifiedOn);
         setDraftFormId(formId);
       } else {
-        // Update existing saved draft form
+        // Update an existing saved draft form
         const response = await axios.post(
           `/api/forms-mock/${draftFormId}`,
           data,
@@ -108,13 +106,11 @@ export const F2Form = () => {
             },
           }
         );
-        const { modifiedOn } = response.data;
+        const { modifiedOn } = response.data.data;
         setLastSaved(modifiedOn);
-        console.log(response);
-        console.log("update call:", modifiedOn);
       }
     } catch (error) {
-      console.error("Error saving data:", error);
+      //TODO: Let the user know that the save or update form failed
     }
   };
   const handleSubmit = async (data: F2FieldValues) => {
@@ -128,10 +124,8 @@ export const F2Form = () => {
       if (response.status !== 200) {
         throw new Error("Failed to submit form data");
       }
-
-      console.log("Data submitted:", data);
     } catch (error) {
-      console.error("Error submitting data:", error);
+      //TODO: Let the user know that the submission failed
     }
   };
   return (

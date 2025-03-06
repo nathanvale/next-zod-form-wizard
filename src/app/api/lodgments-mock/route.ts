@@ -12,11 +12,14 @@ export const POST = async (
     // Simulate submitting a lodgment
     const formData = await request.json();
     console.log("Form data received:", formData);
-    schema.parse(formData);
-    await new Promise((resolve) => setTimeout(resolve, 2000));
+    //schema.parse(formData);
+    await new Promise((resolve) => setTimeout(resolve, 1000));
 
     return NextResponse.json(
-      { message: "Lodgment submitted successfully" },
+      {
+        status: 200,
+        message: "Lodgment submitted successfully",
+      },
       { status: 200 }
     );
   } catch (error) {
@@ -35,7 +38,11 @@ export const POST = async (
       );
     }
     return NextResponse.json(
-      { message: errorMessage, error: "Bad Request" },
+      {
+        status: 500,
+        error: "Internal Server Error",
+        message: "An unexpected error occurred. Please try again later.",
+      },
       { status: 500 }
     );
   }
