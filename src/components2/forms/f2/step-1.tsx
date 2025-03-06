@@ -4,9 +4,8 @@ import { getMeta, Step1FieldValues, Step1FieldNames } from "#lib/forms/f2";
 import { Stack, TextField } from "@mui/material";
 import { useFormContext, Controller } from "react-hook-form";
 import { Card } from "../../core";
-import { StepProps } from "../types";
 
-export const Step1 = ({}: StepProps) => {
+export const Step1 = () => {
   const {
     control,
     formState: { errors },

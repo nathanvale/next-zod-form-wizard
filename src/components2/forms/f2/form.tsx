@@ -94,6 +94,7 @@ export const F2Form = () => {
         const { formId, modifiedOn } = response.data.data;
         setLastSaved(modifiedOn);
         setDraftFormId(formId);
+        return { formId, modifiedOn };
       } else {
         // Update an existing saved draft form
         const response = await axios.post(
@@ -105,26 +106,29 @@ export const F2Form = () => {
             },
           }
         );
-        const { modifiedOn } = response.data.data;
+        const { formId, modifiedOn } = response.data.data;
         setLastSaved(modifiedOn);
+        return { formId, modifiedOn };
       }
     } catch (error) {
       //TODO: Let the user know that the save or update form failed
+      return Promise.reject(error);
     }
   };
   const handleSubmit = async (data: F2FieldValues) => {
     try {
-      const response = await axios.post("/api/lodgments-mock", data, {
+      await axios.post("/api/lodgments-mock", data, {
         headers: {
           "Content-Type": "application/json",
         },
       });
 
-      if (response.status !== 200) {
-        throw new Error("Failed to submit form data");
-      }
+      //TODO: Let the user know that the submission was successful
+      //TODO: Redirect the user to the dashboard page
+      return Promise.resolve();
     } catch (error) {
       //TODO: Let the user know that the submission failed
+      return Promise.reject(error);
     }
   };
   return (

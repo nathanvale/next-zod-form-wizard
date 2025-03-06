@@ -12,7 +12,9 @@ import { useLastSaved } from "#lib/forms/hooks";
 
 export interface FormProps {
   handleSubmit: (data: FieldValuesTypes) => Promise<void>;
-  handleSave: (data: FieldValuesTypes) => Promise<void>;
+  handleSave: (
+    data: FieldValuesTypes
+  ) => Promise<{ formId: string; modifiedOn: number }>;
   title: string;
   description: string;
   subtitle: string;
@@ -133,6 +135,8 @@ export const Form = ({
     const data = getValues();
     setIsSaving(true);
     await handleSave(data);
+    //TODO: Let the user know that the save was successful is they hit the save
+    //TODO: Dont let the user know that the save was successful this was an auto save
     setIsSaving(false);
   };
   const childrenArray = Children.toArray(children);
@@ -184,7 +188,7 @@ export const Form = ({
           />
         </Stack>
       </form>
-      {/* TODO: Uplift this to a Dialog component */}
+      {/*// TODO: Uplift this to a Dialog component */}
       <Modal
         open={openModal}
         onClose={handleCloseModal}
