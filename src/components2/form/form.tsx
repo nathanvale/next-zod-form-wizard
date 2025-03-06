@@ -7,22 +7,22 @@ import { H1, H2 } from "../typography";
 import { useAdditionalContext } from "#lib/forms/shared/context";
 import { validateSchemaWithValues } from "#lib/forms/utils";
 
-export interface BaseFormProps<T> {
-  handleSubmit: (data: T) => Promise<void>;
-  handleSave: (data: T) => Promise<void>;
+export interface FormProps {
+  handleSubmit: (data: FieldValues) => Promise<void>;
+  handleSave: (data: FieldValues) => Promise<void>;
   title: string;
   description: string;
   subtitle: string;
   children: React.ReactNode[];
 }
 
-export const BaseForm = <T extends FieldValues>({
+export const Form = ({
   handleSubmit,
   handleSave,
   title,
   subtitle,
   children,
-}: BaseFormProps<T>) => {
+}: FormProps) => {
   const {
     stepper,
     isSaving,
@@ -35,7 +35,7 @@ export const BaseForm = <T extends FieldValues>({
     trigger,
     handleSubmit: handleRHFSubmit,
     getValues,
-  } = useFormContext<T>();
+  } = useFormContext();
 
   const {
     activeStepIndex,

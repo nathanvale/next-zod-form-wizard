@@ -1,7 +1,7 @@
 "use client";
 
-import { Form } from "./form/f2";
+import { F2Form } from "./form/f2";
 
 export const App = () => {
-  return <Form></Form>;
+  return <F2Form></F2Form>;
 };

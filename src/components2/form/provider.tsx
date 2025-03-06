@@ -5,7 +5,6 @@ import { ReactNode, useState } from "react";
 import {
   useForm,
   FormProvider as RHFFormProvider,
-  FieldValues,
   DefaultValues,
 } from "react-hook-form";
 import { z } from "zod";
@@ -31,7 +30,7 @@ export interface StepState {
 
 export interface FormData extends StepMeta, StepState, StepSchema {}
 
-export interface F2ProviderProps<T extends FieldValues> {
+export interface F2ProviderProps {
   // The form steps
   children: ReactNode;
   // The state of each step
@@ -43,16 +42,16 @@ export interface F2ProviderProps<T extends FieldValues> {
   // The metadata for each field (Label, Placeholder, etc.)
   metaData: StepMeta[];
   // The default values for the form
-  defaultValues: DefaultValues<T>;
+  defaultValues: DefaultValues;
 }
 
-export const FormProvider = <T extends FieldValues>({
+export const FormProvider = ({
   children,
   schemas: stepsSchema,
   schema: formSchema,
   metaData: stepsMeta,
   defaultValues,
-}: F2ProviderProps<T>) => {
+}: F2ProviderProps) => {
   const steps = stepsMeta.map(({ title }) => title);
   const stepper = useStepper({ steps, currentStep: 0 });
   const schemas = stepsSchema.map(({ schema }) => schema);

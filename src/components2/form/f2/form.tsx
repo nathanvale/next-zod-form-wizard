@@ -1,6 +1,6 @@
 import { useURLSearchParams } from "#lib/hooks/use-url-search-params";
 import { usePathname, useRouter } from "next/navigation";
-import { BaseForm } from "../base-form";
+import { Form } from "../form";
 import { Step1 } from "./step-1";
 import { Step2 } from "./step-2";
 import { Step3 } from "./step-3";
@@ -78,7 +78,7 @@ const metaData = data.map(({ title, index, description }) => ({
   description,
 }));
 
-export const Form = () => {
+export const F2Form = () => {
   const pathname = usePathname();
   const { searchParams, createQueryString } = useURLSearchParams();
   const draftFormId = searchParams.get("form-id") as string;
@@ -148,7 +148,7 @@ export const Form = () => {
       metaData={metaData}
       defaultValues={defaultValues}
     >
-      <BaseForm
+      <Form
         title="Create lodgment"
         subtitle="Unfair dismissal"
         description="If your employer has dismissed you, and you believe it was unfair, you may be able to make a claim. Use Form F2.  Check you are ready before you apply."
@@ -161,7 +161,7 @@ export const Form = () => {
         <Step4 />
         <Step5 />
         <Step6 />
-      </BaseForm>
+      </Form>
     </FormProvider>
   );
 };
