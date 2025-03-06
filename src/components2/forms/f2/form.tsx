@@ -19,7 +19,7 @@ import {
   F2FieldValues,
   defaultValues,
 } from "#lib/forms/f2";
-import { useDraftFormIdParam } from "#lib/forms/hooks";
+import { useDraftFormId } from "#lib/forms/hooks";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
@@ -82,7 +82,7 @@ const metaData = data.map(({ title, index, description }) => ({
 }));
 
 export const F2Form = () => {
-  const { draftFormId, setDraftFormId } = useDraftFormIdParam();
+  const { draftFormId, setDraftFormId } = useDraftFormId();
   const [lastSaved, setLastSaved] = useState<number | undefined>();
   const handleSave = async (data: F2FieldValues) => {
     try {

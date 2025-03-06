@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useURLSearchParams } from "#lib/hooks/use-url-search-params";
 import { usePathname, useRouter } from "next/navigation";
 
-export const useDraftFormIdParam = () => {
+export const useDraftFormId = () => {
   const pathname = usePathname();
   const router = useRouter();
   const { searchParams, createQueryString } = useURLSearchParams();

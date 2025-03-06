@@ -5,13 +5,13 @@ export interface LastSavedData
   message: string;
 }
 
-export type UseLastSavedReturn = ReturnType<typeof useLastSavedData>;
+export type UseLastSavedReturn = ReturnType<typeof useLastSaved>;
 
 export interface UseLastSavedProps {
   lastSaved?: number;
 }
 
-export const useLastSavedData = (lastSaved?: number) => {
+export const useLastSaved = (lastSaved?: number) => {
   const [data, setData] = useState<LastSavedData>({
     message: "Not saved yet",
   });
