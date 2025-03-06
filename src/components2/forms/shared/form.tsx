@@ -1,9 +1,9 @@
 import { Box, Stack, StepProps } from "@mui/material";
 import { FieldValues, useFormContext } from "react-hook-form";
-import { Stepper } from "./stepper";
-import { FormActions } from "./actions";
-import { FormToolbar } from "./toolbar";
-import { H1, H2 } from "../typography";
+import { Stepper } from "../stepper";
+import { FormActions } from "../actions";
+import { FormToolbar } from "../toolbar";
+import { H1, H2 } from "../../typography";
 import { useAdditionalContext } from "#lib/forms/shared/context";
 import { validateSchemaWithValues } from "#lib/forms/utils";
 import { FieldValuesTypes } from "#lib/forms/shared/types";

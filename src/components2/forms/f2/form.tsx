@@ -1,6 +1,6 @@
 import { useURLSearchParams } from "#lib/hooks/use-url-search-params";
 import { usePathname, useRouter } from "next/navigation";
-import { Form } from "../form";
+import { Form } from "../shared/form";
 import { Step1 } from "./step-1";
 import { Step2 } from "./step-2";
 import { Step3 } from "./step-3";
@@ -19,6 +19,11 @@ import {
   F2FieldValues,
   defaultValues,
 } from "#lib/forms/f2";
+import {
+  useDraftFormId,
+  useDraftFormIdParam,
+} from "#lib/forms/hooks/export const useFormId = () => {";
+import { set } from "zod";
 
 const data: FormData[] = (
   [
@@ -79,13 +84,22 @@ const metaData = data.map(({ title, index, description }) => ({
 }));
 
 export const F2Form = () => {
-  const pathname = usePathname();
-  const { searchParams, createQueryString } = useURLSearchParams();
-  const draftFormId = searchParams.get("form-id") as string;
-  const router = useRouter();
+  const { draftFormId, setDraftFormId } = useDraftFormIdParam();
   const handleSave = async (data: F2FieldValues) => {
     try {
-      if (!!draftFormId) {
+      if (draftFormId) {
+        // Create a new draft form
+        const response = await fetch("/api/forms-mock", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        });
+        const responseData = await response.json();
+        const { formId, modifiedOn } = responseData;
+        setDraftFormId(formId);
+      } else {
         // Update existing saved draft form
         const response = await fetch(`/api/forms-mock/${draftFormId}`, {
           method: "POST",
@@ -98,24 +112,6 @@ export const F2Form = () => {
 
         const { modifiedOn } = responseData;
         console.log("update call:", modifiedOn);
-      } else {
-        // Create a new draft form
-        const response = await fetch("/api/forms-mock", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(data),
-        });
-        const responseData = await response.json();
-        const { formId, modifiedOn } = responseData;
-        if (formId) {
-          const url = `${pathname}?${createQueryString(
-            "form-id",
-            `${formId}`
-          )}`;
-          router.push(url);
-        }
       }
     } catch (error) {
       console.error("Error saving data:", error);
