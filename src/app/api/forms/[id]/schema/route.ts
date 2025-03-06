@@ -1,9 +1,8 @@
-import { openApiSchema } from "./../../../../lib/forms/shared/utils";
-import { formSchemas } from "#lib/forms";
 import { NextRequest, NextResponse } from "next/server";
 import { generateMock } from "@anatine/zod-mock";
 import { createSchema } from "zod-openapi";
 import { ZodSchema } from "zod";
+import { formSchemas } from "#lib/forms";
 
 export const GET = async (
   request: NextRequest,
@@ -19,15 +18,12 @@ export const GET = async (
 
     const schema = (formSchemas as Record<string, ZodSchema>)[id];
 
-    const openApiSchema = createSchema(schema);
-    const mockData = generateMock(schema);
-    console.log("Schema:", openApiSchema);
-
     if (!schema) {
       return NextResponse.json({ error: "Schema not found" }, { status: 404 });
     }
+    const openApiSchema = createSchema(schema);
 
-    return NextResponse.json({ schema: openApiSchema, mockData });
+    return NextResponse.json({ schema: openApiSchema });
   } catch (error) {
     return NextResponse.json(
       {

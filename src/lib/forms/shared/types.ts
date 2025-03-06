@@ -1,5 +1,5 @@
 import { z, ZodSchema } from "zod";
-import { abnSchema, addressSchema, contactSchema } from "./schema";
+import { organisationSchema, addressSchema, contactSchema } from "./schema";
 
 export type FormId = "f2";
 
@@ -10,5 +10,5 @@ export type FieldMeta = {
 };
 
 export type AddressFields = z.infer<typeof addressSchema>;
-export type AbnFields = z.infer<typeof abnSchema>;
+export type AbnFields = z.infer<typeof organisationSchema>;
 export type ContactFields = z.infer<typeof contactSchema>;

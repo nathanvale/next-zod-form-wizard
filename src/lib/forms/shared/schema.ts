@@ -7,12 +7,10 @@ export const searchSchema = z.string().openapi({ description: "Search term" });
 export const stateSchema = z.string().openapi({ description: "State" });
 export const streetSchema = z.string().openapi({ description: "Street name" });
 
-// Combined address schema
 export const addressSchema = z
   .object({
     city: citySchema,
     postcode: postcodeSchema,
-    search: searchSchema,
     state: stateSchema,
     street: streetSchema,
   })
@@ -41,22 +39,24 @@ export const phoneSchema = z.string().openapi({
 
 export const contactSchema = z
   .object({
-    email: emailSchema,
-    phone: phoneSchema,
+    title: z.string(),
+    firstName: z.string(),
+    lastName: z.string(),
+    email: z.string(),
+    phoneNumber: z.string(),
   })
   .openapi({ description: "Contact details" });
 
-export const abnSchema = z
+export const organisationSchema = z
   .object({
     abn: z.string(),
-    legalName: z.string(),
-    search: z.string().optional(),
+    name: z.string(),
   })
-  .openapi({ description: "Australian Business Number" });
+  .openapi({ description: "Organisation Details" });
 
 export const applicantSchema = z
   .object({
-    abn: abnSchema,
+    abn: organisationSchema,
     address: addressSchema,
     contact: contactSchema,
     profile: profileSchema,
@@ -68,7 +68,7 @@ export const representativeSchema = z
     address: addressSchema,
     contact: contactSchema,
     profile: profileSchema,
-    abn: abnSchema,
+    abn: organisationSchema,
   })
   .openapi({ description: "Representative details" });
 
@@ -77,6 +77,24 @@ export const respondentSchema = z
     address: addressSchema,
     contact: contactSchema,
     profile: profileSchema,
-    abn: abnSchema,
+    abn: organisationSchema,
   })
   .openapi({ description: "Respondent details" });
+
+export const hiddenSchema = z
+  .object({
+    hidden: z.object({
+      // The form id to identify the form
+      id: z.string(),
+      // The current step user is at in the form
+      currentStep: z.number(),
+      // Is it an f2 or f8 form?
+      formDefinitionId: z.string(),
+      // TODO: Is ther a currency type in zod?
+      // The form usage fee
+      fees: z.number(),
+      // Last saved date
+      lastSaved: z.string(),
+    }),
+  })
+  .openapi({ description: "Hidden form details" });
