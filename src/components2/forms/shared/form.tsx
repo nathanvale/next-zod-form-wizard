@@ -143,6 +143,7 @@ export const Form = ({
             saveHref="#"
             isSubmitting={isSubmitting}
             title={title}
+            // TODO: This is actually tied to a step so need to get it from step.description
             description={`If your employer has dismissed you, and you believe it was unfair, you may be able to make a claim. Use Form F2.  Check you are ready before you apply.`}
           />
           <Box mb={2} />
@@ -165,6 +166,7 @@ export const Form = ({
           />
         </Stack>
       </form>
+      {/* TODO: Uplift this to a Dialog component */}
       <Modal
         open={openModal}
         onClose={handleCloseModal}
