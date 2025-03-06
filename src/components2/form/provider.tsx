@@ -44,6 +44,8 @@ export interface F2ProviderProps {
   metaData: StepMeta[];
   // The default values for the form
   defaultValues: DefaultValues<FieldValues>;
+  // Last saved
+  lastSaved?: string;
 }
 
 export const FormProvider = ({
@@ -59,6 +61,7 @@ export const FormProvider = ({
   const currentStepSchema = schemas[stepper.activeStep.index];
   const [isSaving, setIsSaving] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [lastSaved] = useState<string | undefined>(undefined);
 
   const methods = useForm({
     resolver: zodResolver(currentStepSchema),
@@ -75,6 +78,7 @@ export const FormProvider = ({
         setIsSaving,
         setIsSubmitting,
         formSchema,
+        lastSaved,
       }}
     >
       <RHFFormProvider {...methods}>{children}</RHFFormProvider>

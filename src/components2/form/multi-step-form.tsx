@@ -168,7 +168,7 @@ export const MultiStepForm = () => {
         <Box mb={2} />
         <FormToolbar
           handleSave={handleSave}
-          saveMessage="Not saved yet"
+          savedMessage="Not saved yet"
           isSaving={isSaving}
           saveHref="#"
           isSubmitting={isSubmitting}

@@ -14,7 +14,7 @@ export interface FormProps {
   title: string;
   description: string;
   subtitle: string;
-  children: React.ReactNode[];
+  children: React.ReactNode;
 }
 
 export const Form = ({
@@ -31,12 +31,13 @@ export const Form = ({
     setIsSaving,
     setIsSubmitting,
     formSchema,
+    lastSaved,
   } = useAdditionalContext();
   const {
     trigger,
     handleSubmit: handleRHFSubmit,
     getValues,
-  } = useFormContext();
+  } = useFormContext<FieldValuesTypes>();
 
   const {
     activeStepIndex,
@@ -115,7 +116,7 @@ export const Form = ({
         <Box mb={2} />
         <FormToolbar
           handleSave={handleInteralSave}
-          saveMessage="Not saved yet"
+          savedMessage="Not saved yet"
           isSaving={isSaving}
           saveHref="#"
           isSubmitting={isSubmitting}
@@ -123,7 +124,7 @@ export const Form = ({
           description={`If your employer has dismissed you, and you believe it was unfair, you may be able to make a claim. Use Form F2.  Check you are ready before you apply.`}
         />
         <Box mb={2} />
-        {children[activeStepIndex]}
+        {children}
         <Box mb={3} />
         <FormActions
           isAllStepsCompleted={isAllStepsCompleted}

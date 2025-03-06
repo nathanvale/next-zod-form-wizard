@@ -12,6 +12,7 @@ export interface AdditionalState {
   setIsSaving: (value: boolean) => void;
   setIsSubmitting: (value: boolean) => void;
   formSchema: z.ZodSchema;
+  lastSaved?: string;
 }
 
 export const AdditionalContext = createContext<AdditionalState | undefined>(

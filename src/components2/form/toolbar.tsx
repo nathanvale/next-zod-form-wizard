@@ -9,7 +9,7 @@ import {
   Typography,
 } from "@mui/material";
 import { CloudDone } from "@mui/icons-material";
-import { Body2, H3, Subtitle2 } from "../typography";
+import { Body2, H3 } from "../typography";
 import React from "react";
 
 export interface FormToolbarProps
@@ -17,7 +17,7 @@ export interface FormToolbarProps
   handleSave: () => Promise<void>;
   isSaving: boolean;
   isSubmitting: boolean;
-  saveMessage?: string;
+  savedMessage: string;
   saveHref: string;
   title: React.ReactNode;
   description?: React.ReactNode;
@@ -27,7 +27,7 @@ export const FormToolbar = ({
   handleSave,
   isSaving,
   isSubmitting,
-  saveMessage = "Not saved yet",
+  savedMessage,
   saveHref,
   title,
   description,
@@ -69,7 +69,7 @@ export const FormToolbar = ({
       </Box>
       <Stack direction={"row"} color="text.secondary" gap={1}>
         <CloudDone color="inherit" fontSize="small" />
-        <Body2 color="inherit">{saveMessage}</Body2>
+        <Body2 color="inherit">{savedMessage}</Body2>
       </Stack>
       {description && (
         <CardContent

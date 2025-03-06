@@ -38,6 +38,7 @@ export const FormActions = ({
   deleteLabel = "Delete",
   ...props
 }: FormActionsProps) => {
+  const isSubmitable = activeStepIndex === steps.length - 1;
   return (
     <Box
       sx={{ display: "flex" }}
@@ -63,6 +64,7 @@ export const FormActions = ({
             color="secondary"
             onClick={handleBack}
             disabled={isSaving || isSubmitting}
+            data-auto-save
           >
             Back
           </Button>
@@ -73,8 +75,9 @@ export const FormActions = ({
           disabled={isSaving || isSubmitting}
           loading={isSubmitting}
           onClick={handleNext}
+          data-auto-save={!isSubmitable}
         >
-          {activeStepIndex === steps.length - 1 ? "Submit" : "Next"}
+          {isSubmitable ? "Submit" : "Next"}
         </Button>
       </Box>
     </Box>
