@@ -1,7 +1,7 @@
 import { z, ZodSchema } from "zod";
 import { organisationSchema, addressSchema, contactSchema } from "./schema";
 
-export type FormId = "f2";
+export type FormId = "f2" | "f8";
 
 export type FieldMeta = {
   label: string;

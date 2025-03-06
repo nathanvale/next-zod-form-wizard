@@ -21,7 +21,7 @@ export const GET = async (
     }
     const mockData = generateMock(schema);
 
-    return NextResponse.json({ mockData });
+    return NextResponse.json(mockData);
   } catch (error) {
     return NextResponse.json(
       {

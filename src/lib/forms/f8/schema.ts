@@ -3,9 +3,11 @@ import {
   contactSchema,
   hiddenSchema,
   organisationSchema,
-} from "./../shared/schema";
+} from "../shared/schema";
 import { z } from "zod";
 import { addressSchema } from "#lib/forms/shared/schema";
+
+
 
 export const step1Schema = z.object({});
 

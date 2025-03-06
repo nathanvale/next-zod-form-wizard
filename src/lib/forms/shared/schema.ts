@@ -54,33 +54,6 @@ export const organisationSchema = z
   })
   .openapi({ description: "Organisation Details" });
 
-export const applicantSchema = z
-  .object({
-    abn: organisationSchema,
-    address: addressSchema,
-    contact: contactSchema,
-    profile: profileSchema,
-  })
-  .openapi({ description: "Applicant details" });
-
-export const representativeSchema = z
-  .object({
-    address: addressSchema,
-    contact: contactSchema,
-    profile: profileSchema,
-    abn: organisationSchema,
-  })
-  .openapi({ description: "Representative details" });
-
-export const respondentSchema = z
-  .object({
-    address: addressSchema,
-    contact: contactSchema,
-    profile: profileSchema,
-    abn: organisationSchema,
-  })
-  .openapi({ description: "Respondent details" });
-
 export const hiddenSchema = z
   .object({
     hidden: z.object({
@@ -98,3 +71,29 @@ export const hiddenSchema = z
     }),
   })
   .openapi({ description: "Hidden form details" });
+
+export const applicantSchema = z.object({
+  isAnother: z.boolean(),
+  isAdult: z.boolean(),
+  ...contactSchema.shape,
+  address: addressSchema,
+  isInterpreterRequired: z.boolean(),
+  interpreterLanguage: z.string(),
+  isAccessibiltyRequired: z.boolean(),
+  accessibilityType: z.string(),
+  industrialAssociation: z.object({
+    isAssociated: z.boolean(),
+    name: z.string(),
+    abn: z.string(),
+    address: addressSchema,
+    contact: contactSchema,
+  }),
+  representative: z.object({
+    isApplicatantRepresented: z.boolean(),
+    // TODO: Make and enum as could be "Lawyer" or "Paid Agent" or "None"
+    lawyerOrPaidAgent: z.string(),
+    ...contactSchema.shape,
+    organisation: organisationSchema,
+    address: addressSchema,
+  }),
+});

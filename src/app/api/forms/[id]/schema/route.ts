@@ -23,7 +23,7 @@ export const GET = async (
     }
     const openApiSchema = createSchema(schema);
 
-    return NextResponse.json({ schema: openApiSchema });
+    return NextResponse.json({ openApiSchema });
   } catch (error) {
     return NextResponse.json(
       {
