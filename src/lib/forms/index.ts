@@ -1,1 +1,1 @@
-export { formSchemas } from "./form-schemas";
+export { formSchemas } from "./schemas";

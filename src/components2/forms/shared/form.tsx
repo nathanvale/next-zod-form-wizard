@@ -54,50 +54,35 @@ export const Form = ({
   } = stepper;
 
   const [openModal, setOpenModal] = useState(false);
-  const [queuedStep, setQueuedStep] = useState<number | undefined>();
+  const [handleContinue, setHandleContinue] = useState<() => void>(
+    () => () => {}
+  );
   const { message: savedMessage } = useLastSaved(lastSaved);
 
   useEffect(() => {
-    setQueuedStep(undefined);
+    setHandleContinue(() => () => {});
   }, [activeStepIndex]);
 
   const handleCloseModal = () => setOpenModal(false);
-  const handleContinue = () => {
-    setOpenModal(false);
-    if (queuedStep !== undefined) {
-      setActiveStep(queuedStep);
-    }
+
+  const validate = async () => {
+    const isValid = await trigger();
+    const data = getValues();
+    validateSchemaWithValues(data, formSchema);
+    return isValid;
   };
 
   const validateAndGotoStep = async (targetStepIndex: number) => {
-    const isValid = await trigger();
-    const data = getValues();
-    validateSchemaWithValues(data, formSchema);
+    const isValid = await validate();
     if (isValid) {
       setActiveStep(targetStepIndex);
     } else {
-      setQueuedStep(targetStepIndex);
+      setHandleContinue(() => () => {
+        setOpenModal(false);
+        setActiveStep(targetStepIndex);
+      });
       setOpenModal(true);
     }
-  };
-
-  const handleInternalSubmit = async () => {
-    const isValid = await trigger();
-    const data = getValues();
-    validateSchemaWithValues(data, formSchema);
-    if (!isValid) {
-      return;
-    }
-    setIsSubmitting(true);
-    await handleSubmit(data);
-    setIsSubmitting(false);
-  };
-
-  const handleInteralSave = async () => {
-    const data = getValues();
-    setIsSaving(true);
-    await handleSave(data);
-    setIsSaving(false);
   };
 
   const handleBack = async () => {
@@ -118,6 +103,32 @@ export const Form = ({
     await validateAndGotoStep(step);
   };
 
+  const submit = async () => {
+    const data = getValues();
+    setIsSubmitting(true);
+    await handleSubmit(data);
+    setIsSubmitting(false);
+  };
+
+  const handleInternalSubmit = async () => {
+    const isValid = await validate();
+    if (!isValid) {
+      setHandleContinue(() => async () => {
+        setOpenModal(false);
+        await submit();
+      });
+      setOpenModal(true);
+      return;
+    }
+    await submit();
+  };
+
+  const handleInteralSave = async () => {
+    const data = getValues();
+    setIsSaving(true);
+    await handleSave(data);
+    setIsSaving(false);
+  };
   const childrenArray = Children.toArray(children);
 
   return (
