@@ -1,4 +1,4 @@
-import { Box, Stack } from "@mui/material";
+import { Box, Stack, StepProps } from "@mui/material";
 import { FieldValues, useFormContext } from "react-hook-form";
 import { Stepper } from "./stepper";
 import { FormActions } from "./actions";
@@ -7,6 +7,12 @@ import { H1, H2 } from "../typography";
 import { useAdditionalContext } from "#lib/forms/shared/context";
 import { validateSchemaWithValues } from "#lib/forms/utils";
 import { FieldValuesTypes } from "#lib/forms/shared/types";
+import {
+  Children,
+  JSXElementConstructor,
+  ReactElement,
+  ReactNode,
+} from "react";
 
 export interface FormProps {
   handleSubmit: (data: FieldValuesTypes) => Promise<void>;
@@ -14,7 +20,7 @@ export interface FormProps {
   title: string;
   description: string;
   subtitle: string;
-  children: React.ReactNode;
+  children: ReactElement | ReactElement[];
 }
 
 export const Form = ({
@@ -99,6 +105,8 @@ export const Form = ({
     await validateAndSetStep(step);
   };
 
+  const childrenArray = Children.toArray(children);
+
   return (
     <form onSubmit={handleRHFSubmit(handleInternalSubmit)}>
       <Stack gap={0}>
@@ -124,7 +132,7 @@ export const Form = ({
           description={`If your employer has dismissed you, and you believe it was unfair, you may be able to make a claim. Use Form F2.  Check you are ready before you apply.`}
         />
         <Box mb={2} />
-        {children}
+        {childrenArray[activeStepIndex]}
         <Box mb={3} />
         <FormActions
           isAllStepsCompleted={isAllStepsCompleted}
