@@ -5,24 +5,32 @@ import { FormActions } from "./actions";
 import { FormToolbar } from "./toolbar";
 import { H1, H2 } from "../typography";
 import { useAdditionalContext } from "#lib/forms/shared/context";
+import { validateSchemaWithValues } from "#lib/forms/utils";
 
-interface FormProps<T> {
-  onSubmit: (data: T) => Promise<void>;
-  onSave: (data: T) => Promise<void>;
+export interface BaseFormProps<T> {
+  handleSubmit: (data: T) => Promise<void>;
+  handleSave: (data: T) => Promise<void>;
   title: string;
   description: string;
   subtitle: string;
   children: React.ReactNode[];
 }
 
-export const Form = <T extends FieldValues>({
-  onSubmit,
-  onSave,
+export const BaseForm = <T extends FieldValues>({
+  handleSubmit,
+  handleSave,
   title,
   subtitle,
   children,
-}: FormProps<T>) => {
-  const { stepper, isSaving, isSubmitting } = useAdditionalContext();
+}: BaseFormProps<T>) => {
+  const {
+    stepper,
+    isSaving,
+    isSubmitting,
+    setIsSaving,
+    setIsSubmitting,
+    formSchema,
+  } = useAdditionalContext();
   const {
     trigger,
     handleSubmit: handleRHFSubmit,
@@ -43,6 +51,8 @@ export const Form = <T extends FieldValues>({
 
   const validateAndSetStep = async (newStepIndex: number) => {
     const isValid = await trigger();
+    const data = getValues();
+    validateSchemaWithValues(data, formSchema);
     if (isValid) {
       setActiveStep(newStepIndex);
     } else {
@@ -50,18 +60,23 @@ export const Form = <T extends FieldValues>({
     }
   };
 
-  const handleSubmit = async () => {
-    const data = getValues();
+  const handleInternalSubmit = async () => {
     const isValid = await trigger();
+    const data = getValues();
+    validateSchemaWithValues(data, formSchema);
     if (!isValid) {
       return;
     }
-    await onSubmit(data);
+    setIsSubmitting(true);
+    await handleSubmit(data);
+    setIsSubmitting(false);
   };
 
-  const handleSave = async () => {
+  const handleInteralSave = async () => {
     const data = getValues();
-    await onSave(data);
+    setIsSaving(true);
+    await handleSave(data);
+    setIsSaving(false);
   };
 
   const handleBack = async () => {
@@ -74,7 +89,7 @@ export const Form = <T extends FieldValues>({
     if (activeStepIndex < totalSteps - 1) {
       await validateAndSetStep(activeStepIndex + 1);
     } else {
-      await handleSubmit();
+      await handleInternalSubmit();
     }
   };
 
@@ -83,11 +98,12 @@ export const Form = <T extends FieldValues>({
   };
 
   return (
-    <form onSubmit={handleRHFSubmit(handleSubmit)}>
+    <form onSubmit={handleRHFSubmit(handleInternalSubmit)}>
       <Stack gap={0}>
         <H1 hasOutline>{title}</H1>
         <Box mb={3} />
         <H2>{subtitle}</H2>
+        <Box mb={2} />
         <Stepper
           steps={steps}
           handleStep={handleStep}
@@ -97,7 +113,7 @@ export const Form = <T extends FieldValues>({
         />
         <Box mb={2} />
         <FormToolbar
-          handleSave={handleSave}
+          handleSave={handleInteralSave}
           saveMessage="Not saved yet"
           isSaving={isSaving}
           saveHref="#"
@@ -116,7 +132,7 @@ export const Form = <T extends FieldValues>({
           totalStepsCompleted={totalStepsCompleted}
           handleNext={handleNext}
           handleBack={handleBack}
-          handleComplete={handleSubmit}
+          handleComplete={handleInternalSubmit}
           handleReset={handleReset}
           // TODO: pass in a hanldleDelete function if the user has a draftId
           handleDelete={undefined}
