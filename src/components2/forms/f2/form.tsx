@@ -20,6 +20,7 @@ import {
   defaultValues,
 } from "#lib/forms/f2";
 import { useDraftFormIdParam } from "#lib/forms/hooks";
+import { useEffect, useState } from "react";
 
 const data: FormData[] = (
   [
@@ -81,6 +82,7 @@ const metaData = data.map(({ title, index, description }) => ({
 
 export const F2Form = () => {
   const { draftFormId, setDraftFormId } = useDraftFormIdParam();
+  const [lastSaved, setLastSaved] = useState<number | undefined>();
   const handleSave = async (data: F2FieldValues) => {
     try {
       if (draftFormId) {
@@ -94,6 +96,7 @@ export const F2Form = () => {
         });
         const responseData = await response.json();
         const { formId, modifiedOn } = responseData;
+        setLastSaved(modifiedOn);
         setDraftFormId(formId);
       } else {
         // Update existing saved draft form
@@ -107,6 +110,7 @@ export const F2Form = () => {
         const responseData = await response.json();
 
         const { modifiedOn } = responseData;
+        setLastSaved(modifiedOn);
         console.log("update call:", modifiedOn);
       }
     } catch (error) {
@@ -139,6 +143,7 @@ export const F2Form = () => {
       schema={schema}
       metaData={metaData}
       defaultValues={defaultValues}
+      lastSaved={lastSaved}
     >
       <Form
         title="Create lodgment"

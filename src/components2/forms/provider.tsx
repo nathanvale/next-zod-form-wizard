@@ -44,8 +44,8 @@ export interface F2ProviderProps {
   metaData: StepMeta[];
   // The default values for the form
   defaultValues: DefaultValues<FieldValues>;
-  // Last saved
-  lastSaved?: string;
+  // The last time the form was saved as a unix timestamp
+  lastSaved?: number;
 }
 
 export const FormProvider = ({
@@ -61,7 +61,7 @@ export const FormProvider = ({
   const currentStepSchema = schemas[stepper.activeStep.index];
   const [isSaving, setIsSaving] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [lastSaved] = useState<string | undefined>(undefined);
+  const [lastSaved] = useState<number | undefined>(undefined);
 
   const methods = useForm({
     resolver: zodResolver(currentStepSchema),
