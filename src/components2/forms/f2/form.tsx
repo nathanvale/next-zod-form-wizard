@@ -21,6 +21,7 @@ import {
 } from "#lib/forms/f2";
 import { useDraftFormIdParam } from "#lib/forms/hooks";
 import { useEffect, useState } from "react";
+import axios from "axios";
 
 const data: FormData[] = (
   [
@@ -87,29 +88,26 @@ export const F2Form = () => {
     try {
       if (draftFormId) {
         // Create a new draft form
-        const response = await fetch("/api/forms-mock", {
-          method: "POST",
+        const response = await axios.post("/api/forms-mock", data, {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(data),
         });
-        const responseData = await response.json();
-        const { formId, modifiedOn } = responseData;
+        const { formId, modifiedOn } = response.data;
         setLastSaved(modifiedOn);
         setDraftFormId(formId);
       } else {
         // Update existing saved draft form
-        const response = await fetch(`/api/forms-mock/${draftFormId}`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(data),
-        });
-        const responseData = await response.json();
-
-        const { modifiedOn } = responseData;
+        const response = await axios.post(
+          `/api/forms-mock/${draftFormId}`,
+          data,
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        const { modifiedOn } = response.data;
         setLastSaved(modifiedOn);
         console.log("update call:", modifiedOn);
       }
@@ -119,15 +117,13 @@ export const F2Form = () => {
   };
   const handleSubmit = async (data: F2FieldValues) => {
     try {
-      const response = await fetch("/api/lodgments-mock", {
-        method: "POST",
+      const response = await axios.post("/api/lodgments-mock", data, {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(data),
       });
 
-      if (!response.ok) {
+      if (response.status !== 200) {
         throw new Error("Failed to submit form data");
       }
 
