@@ -1,11 +1,6 @@
 import "zod-openapi/extend";
 import { z } from "zod";
 
-// TODO: create hidden fields schema
-// currentStep: 'applicant',
-// applicantIsAnother: false,
-// lastSaved:""
-
 export const citySchema = z.string().openapi({ description: "City name" });
 export const postcodeSchema = z.string().openapi({ description: "Postcode" });
 export const searchSchema = z.string().openapi({ description: "Search term" });
