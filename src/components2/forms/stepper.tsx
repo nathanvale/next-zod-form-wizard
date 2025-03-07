@@ -49,6 +49,7 @@ export const Stepper = ({
                 color="inherit"
                 onClick={handleStep(index)}
                 disableRipple
+                data-auto-save
                 icon={stepButtonProps.error ? null : null}
                 {...stepButtonProps}
               >
